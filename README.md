@@ -16,10 +16,10 @@ This repository contains the website for Scythe Client. This repo is **closed so
 
 ## Project Directory Overview
 
-The `/app` directory has all the main code like the pages and layouts, and the api endpoints.
-The `/components` directory has all the UI components from shadcn/ui library, and is used in the project.
-The `/lib` directory has the essential functions for the API to function properly such as Inngest and MongoDB connections.
-The `/public` directory has the static assets used in the website, such as logo, background images, etc.
+- The `/app` directory has all the main code like the pages and layouts, and the api endpoints.
+- The `/components` directory has all the UI components from shadcn/ui library, and is used in the project.
+- The `/lib` directory has the essential functions for the API to function properly such as Inngest and MongoDB connections.
+- The `/public` directory has the static assets used in the website, such as logo, background images, etc.
 
 ### API Endpoints
 
