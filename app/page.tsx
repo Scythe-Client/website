@@ -1,7 +1,12 @@
-import { Sword, Zap, Shield, Download, Github, Twitter } from 'lucide-react';
+'use client';
+
+import {Sword, Zap, Shield, Download} from 'lucide-react';
 import Link from "next/link";
+import {SignInButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
+import {FaDiscord, FaInstagram, FaTwitter} from "react-icons/fa";
 
 export default function Home() {
+    const { isSignedIn } = useUser();
     return (
         <div className="min-h-screen bg-black text-white">
             <nav className="fixed w-full bg-black/80 backdrop-blur-sm border-b border-gray-800 z-50">
@@ -10,12 +15,23 @@ export default function Home() {
                         <span className="text-2xl font-semibold">Scythe Client</span>
                     </div>
                     <div className="hidden md:flex items-center gap-8">
-                        <a href="#features" className="hover:text-purple-500 transition-colors">Features</a>
-                        <a href="#download" className="hover:text-purple-500 transition-colors">Download</a>
-                        <a href="#community" className="hover:text-purple-500 transition-colors">Community</a>
-                        <button className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-semibold transition-colors">
-                            Get Started
-                        </button>
+                        <a href="/features" className="hover:text-[#7a4dba] transition-colors">Features</a>
+                        <a href="/download" className="hover:text-[#7a4dba] transition-colors">Download</a>
+                        <a href="/community" className="hover:text-[#7a4dba] transition-colors">Community</a>
+                        {!isSignedIn ? (
+                            <>
+                                <SignInButton mode="modal">
+                                    <button className="hover:text-[#7a4dba] transition-colors cursor-pointer">Sign In</button>
+                                </SignInButton>
+                                <SignUpButton mode="modal">
+                                    <button className="group cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] hover:from-[#4a3a6a] hover:to-[#3a2a5a] px-4 py-2 rounded-md font-medium text-md text-white shadow-[0_0_20px_-5px_rgba(90,50,150,0.6)] transition-all flex items-center gap-2">
+                                        Get Started
+                                    </button>
+                                </SignUpButton>
+                            </>
+                        ) : (
+                            <UserButton afterSignOutUrl="/" />
+                        )}
                     </div>
                 </div>
             </nav>
@@ -26,24 +42,24 @@ export default function Home() {
 
                 <div className="relative max-w-7xl mx-auto text-center">
                     <div className="inline-block mb-4 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full">
-                        <span className="text-purple-400 text-sm font-semibold">In Beta</span>
+                        <span className="text-[#7a4dba] text-sm font-semibold">In Beta</span>
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-semibold mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-950 bg-clip-text text-transparent">
+                    <h1 className="text-6xl md:text-8xl font-semibold mb-6 bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent">
                         Scythe Client
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">
                         The ultimate Minecraft client for competitive players. Dominate the battlefield with cutting-edge features.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <Link href="#download">
-                            <button className="group cursor-pointer bg-purple-600 hover:bg-purple-700 px-6 py-2.5 rounded-md font-medium text-lg shadow shadow-black transition-all hover:transform-stroke flex items-center gap-2">
+                        <Link href="/download">
+                            <button className="group cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] hover:from-[#4a3a6a] hover:to-[#3a2a5a] px-6 py-2.5 rounded-md font-medium text-lg text-white shadow-[0_0_20px_-5px_rgba(90,50,150,0.6)] transition-all flex items-center gap-2">
                                 <Download className="w-5 h-5" />
                                 Download Now
                                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                             </button>
                         </Link>
-                        <button className="border-2 border-gray-700 cursor-pointer hover:border-purple-500 px-6 py-2.5 rounded-lg font-bold text-lg shadow-purple-700 shadow transition-all hover:transform-stroke hover:shadow-purple-800">
-                            View Documentation
+                        <button className="border-2 border-gray-700 cursor-pointer hover:border-[#7a6a8a] px-6 py-2.5 rounded-lg font-bold text-lg shadow-[#7a4dba] shadow transition-all hover:transform-stroke hover:shadow-purple-800">
+                            Apply for Beta
                         </button>
                     </div>
                     <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-500">
@@ -62,14 +78,14 @@ export default function Home() {
             <section id="features" className="py-20 px-6 bg-gradient-to-b from-black to-gray-900">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-semibold mb-4">Unmatched Performance</h2>
+                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent md:text-5xl font-semibold mb-4">Unmatched Performance</h2>
                         <p className="text-gray-400 text-lg">Features designed for competitive excellence</p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="group bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-purple-500/50 p-8 rounded-xl transition-all hover:scale-105">
                             <div className="w-14 h-14 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
-                                <Zap className="w-8 h-8 text-purple-500" />
+                                <Zap className="w-8 h-8 text-[#7a4dba]" />
                             </div>
                             <h3 className="text-2xl font-semibold mb-4">Lightning Fast</h3>
                             <p className="text-gray-400">
@@ -79,7 +95,7 @@ export default function Home() {
 
                         <div className="group bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-purple-500/50 p-8 rounded-xl transition-all hover:scale-105">
                             <div className="w-14 h-14 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
-                                <Shield className="w-8 h-8 text-purple-500" />
+                                <Shield className="w-8 h-8 text-[#7a4dba]" />
                             </div>
                             <h3 className="text-2xl font-semibold mb-4">Secure & Safe</h3>
                             <p className="text-gray-400">
@@ -89,7 +105,7 @@ export default function Home() {
 
                         <div className="group bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-purple-500/50 p-8 rounded-xl transition-all hover:scale-105">
                             <div className="w-14 h-14 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
-                                <Sword className="w-8 h-8 text-purple-500" />
+                                <Sword className="w-8 h-8 text-[#7a4dba]" />
                             </div>
                             <h3 className="text-2xl font-semibold mb-4">Competitive Edge</h3>
                             <p className="text-gray-400">
@@ -102,7 +118,7 @@ export default function Home() {
 
             <section id="download" className="py-20 px-6 bg-gray-900">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-4xl md:text-5xl font-semibold mb-6">Ready to dominate?</h2>
+                    <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent md:text-5xl font-semibold mb-6">Ready to dominate?</h2>
                     <p className="text-gray-400 text-lg mb-12">
                         Join thousands of players who have already upgraded their Minecraft experience
                     </p>
@@ -110,7 +126,7 @@ export default function Home() {
                         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                             <div className="text-left">
                                 <h3 className="text-3xl font-semibold mb-2">Scythe Client v1.0</h3>
-                                <p className="text-gray-400 mb-4">Compatible with Minecraft 1.8 - 1.20</p>
+                                <p className="text-gray-400 mb-4">Compatible with Minecraft 1.8 and 1.21.4</p>
                                 <div className="flex flex-wrap gap-3">
                                     <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">Windows</span>
                                     <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">macOS</span>
@@ -129,31 +145,34 @@ export default function Home() {
             <section id="community" className="py-20 px-6 bg-black">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4">Join Our Community</h2>
+                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-4xl md:text-5xl font-bold mb-4">Join Our Community</h2>
                         <p className="text-gray-400 text-lg">Connect with players worldwide</p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8 mb-12">
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-purple-500 mb-2">50K+</div>
+                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">50K+</div>
                             <div className="text-gray-400">Active Users</div>
                         </div>
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-purple-500 mb-2">1M+</div>
+                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">1M+</div>
                             <div className="text-gray-400">Downloads</div>
                         </div>
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-purple-500 mb-2">24/7</div>
+                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">24/7</div>
                             <div className="text-gray-400">Support</div>
                         </div>
                     </div>
 
                     <div className="flex justify-center gap-6">
-                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-purple-500 p-4 rounded-lg transition-all">
-                            <Github className="w-6 h-6" />
+                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
+                            <FaDiscord className="w-6 h-6" />
                         </button>
-                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-purple-500 p-4 rounded-lg transition-all">
-                            <Twitter className="w-6 h-6" />
+                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
+                            <FaTwitter className="w-6 h-6" />
+                        </button>
+                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
+                            <FaInstagram className="w-6 h-6" />
                         </button>
                     </div>
                 </div>
@@ -162,11 +181,10 @@ export default function Home() {
             <footer className="border-t border-gray-800 py-8 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                        <Sword className="w-6 h-6 text-purple-500" />
                         <span className="font-bold">Scythe Client</span>
                     </div>
                     <p className="text-gray-500 text-sm">
-                        © 2024 Scythe Client. Not affiliated with Mojang or Microsoft.
+                        © 2025 Scythe Client. Not affiliated with Mojang or Microsoft.
                     </p>
                 </div>
             </footer>
