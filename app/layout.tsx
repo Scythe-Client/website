@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {ClerkProvider} from "@clerk/nextjs";
+import {connectDB} from "@/lib/db";
+import {ENV} from "@/lib/env";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +19,8 @@ export const metadata: Metadata = {
   title: "Scythe Client",
   description: "Scythe Client website",
 };
+
+await connectDB();
 
 export default function RootLayout({
   children,
