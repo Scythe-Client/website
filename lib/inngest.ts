@@ -1,8 +1,8 @@
 import { Inngest } from "inngest";
-import {connectDB} from "@/lib/db";
+import {connectDB} from "./db";
 import User from "@/app/models/User";
 
-export const inngest = new Inngest({ id: "scythe-client"});
+export const inngest = new Inngest({ id: "scythe-client" });
 
 const syncUser = inngest.createFunction(
     { id: "sync-user" },
