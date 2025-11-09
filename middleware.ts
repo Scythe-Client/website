@@ -10,7 +10,7 @@ export default async function middleware(
 ) {
     const res = await clerk(req, event);
     const response = res || NextResponse.next();
-    const origin = ENV.CLIENT_URL || "http://localhost:3000";
+    const origin = ENV.CLIENT_URL;
 
     response.headers.set("Access-Control-Allow-Origin", origin || "*");
     response.headers.set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
