@@ -119,6 +119,13 @@ html {
     scrollbar-width: none;
 }
 
+@font-face {
+    font-family: 'Horizon';
+    src: url('../public/fonts/Horizon.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

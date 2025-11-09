@@ -1,71 +1,45 @@
 'use client';
 
-import {Sword, Zap, Shield, Download} from 'lucide-react';
+import {Sword, Zap, Shield, Download} from 'lucide-react';;
+import {
+    FaDiscord,
+    FaEnvelopeOpenText,
+} from "react-icons/fa";
 import Link from "next/link";
-import {SignInButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
-import {FaDiscord, FaInstagram, FaTwitter} from "react-icons/fa";
+import Footer from "@/components/custom/Footer";
+import Header from "@/components/custom/Header";
 
 export default function Home() {
-    const { isSignedIn } = useUser();
     return (
         <div className="min-h-screen bg-black text-white">
-            <nav className="fixed w-full bg-black/80 backdrop-blur-sm border-b border-gray-800 z-50">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="text-2xl font-semibold">Scythe Client</span>
-                    </div>
-                    <div className="hidden md:flex items-center gap-8">
-                        <a href="/features" className="hover:text-[#7a4dba] transition-colors">Features</a>
-                        <a href="/download" className="hover:text-[#7a4dba] transition-colors">Download</a>
-                        <a href="/community" className="hover:text-[#7a4dba] transition-colors">Community</a>
-                        {!isSignedIn ? (
-                            <>
-                                <SignInButton mode="modal">
-                                    <button className="hover:text-[#7a4dba] transition-colors cursor-pointer">Sign In</button>
-                                </SignInButton>
-                                <SignUpButton mode="modal">
-                                    <button className="group cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] hover:from-[#4a3a6a] hover:to-[#3a2a5a] px-4 py-2 rounded-md font-medium text-md text-white shadow-[0_0_20px_-5px_rgba(90,50,150,0.6)] transition-all flex items-center gap-2">
-                                        Get Started
-                                    </button>
-                                </SignUpButton>
-                            </>
-                        ) : (
-                            <UserButton afterSignOutUrl="/" />
-                        )}
-                    </div>
-                </div>
-            </nav>
-
-            <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-black"></div>
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
-
-                <div className="relative max-w-7xl mx-auto text-center">
-                    <div className="inline-block mb-4 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full">
-                        <span className="text-[#7a4dba] text-sm font-semibold">In Beta</span>
-                    </div>
-                    <h1 className="text-6xl md:text-8xl font-semibold mb-6 bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent">
+            <Header />
+            <section className="relative pt-48 pb-10 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black"></div>
+                <div className="relative max-w-7xl mx-auto">
+                    <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent">
                         Scythe Client
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                        The ultimate Minecraft client for competitive players. Dominate the battlefield with cutting-edge features.
+                    <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl">
+                        Built for competitors who play to win — every frame, click, and move optimized for peak performance.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <Link href="/download">
-                            <button className="group cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] hover:from-[#4a3a6a] hover:to-[#3a2a5a] px-6 py-2.5 rounded-md font-medium text-lg text-white shadow-[0_0_20px_-5px_rgba(90,50,150,0.6)] transition-all flex items-center gap-2">
-                                <Download className="w-5 h-5" />
-                                Download Now
+                    <div className="flex flex-col sm:flex-row gap-4 justify-start items-center">
+                        <Link href="https://discord.scytheclient.com">
+                            <button className="group cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] hover:from-[#4a3a6a] hover:to-[#3a2a5a] border-2 border-gray-950 px-6 py-2.5 rounded-md font-medium text-lg text-white shadow-[0_0_20px_-5px_rgba(90,50,150,0.6)] transition-all flex items-center gap-2">
+                                <FaEnvelopeOpenText className="w-4 h-4" />
+                                Join the Waitlist
                                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                             </button>
                         </Link>
-                        <button className="border-2 border-gray-700 cursor-pointer hover:border-[#7a6a8a] px-6 py-2.5 rounded-lg font-bold text-lg shadow-[#7a4dba] shadow transition-all hover:transform-stroke hover:shadow-purple-800">
-                            Apply for Beta
-                        </button>
+                        <Link href="https://forms.gle/rSKiydw8a9zRhP1AA">
+                            <button className="border-2 border-gray-700 cursor-pointer hover:border-[#7a6a8a] px-6 py-2.5 rounded-lg font-medium text-lg shadow-[#7a4dba] shadow transition-all hover:transform-stroke hover:shadow-purple-800">
+                                Apply for Beta
+                            </button>
+                        </Link>
                     </div>
-                    <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-500">
+                    <div className="mt-12 flex items-center gap-8 text-sm text-gray-500">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span>0 Active Users</span>
+                            <span>100+ Active Users</span>
                         </div>
                         <div>•</div>
                         <div>Windows / Mac / Linux</div>
@@ -151,43 +125,30 @@ export default function Home() {
 
                     <div className="grid md:grid-cols-3 gap-8 mb-12">
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">50K+</div>
+                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">100+</div>
                             <div className="text-gray-400">Active Users</div>
                         </div>
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">1M+</div>
+                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">100+</div>
                             <div className="text-gray-400">Downloads</div>
                         </div>
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
                             <div className="text-4xl font-bold text-[#7a4dba] mb-2">24/7</div>
                             <div className="text-gray-400">Support</div>
                         </div>
-                    </div>
-
-                    <div className="flex justify-center gap-6">
-                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
-                            <FaDiscord className="w-6 h-6" />
-                        </button>
-                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
-                            <FaTwitter className="w-6 h-6" />
-                        </button>
-                        <button className="bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-[#7a4dba] p-4 rounded-lg transition-all">
-                            <FaInstagram className="w-6 h-6" />
-                        </button>
+                        <div className="md:col-span-3 flex justify-center">
+                            <Link href="https://discord.scytheclient.com">
+                                <button className="flex gap-3 px-6 bg-gradient-to-br from-blue-600 via-blue-800 to-blue-700 cursor-pointer border-1 border-gray-800 hover:border-blue-900 hover:shadow-blue-900 shadow-2xl p-4 rounded-lg transition-all">
+                                    <FaDiscord className="w-6 h-6" />
+                                    Join our Discord!
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <footer className="border-t border-gray-800 py-8 px-6">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-2">
-                        <span className="font-bold">Scythe Client</span>
-                    </div>
-                    <p className="text-gray-500 text-sm">
-                        © 2025 Scythe Client. Not affiliated with Mojang or Microsoft.
-                    </p>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 }
