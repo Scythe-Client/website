@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import { ENV } from "./env"
+import {ENV} from "@/lib/env";
+
+let isConnected = false;
 
 export const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(ENV.MONGODB_URI!);
-        console.log("Connected to MonogoDB", conn.connection.host);
-    } catch (err) {
-        console.error("Error connecting to MonogDB", err);
-        process.exit(1);
-    }
-}
+    if (isConnected) return;
+    if (!ENV.MONGODB_URI) throw new Error("MONGO_URI not set");
+
+    await mongoose.connect(ENV.MONGODB_URI);
+    isConnected = true;
+    console.log("MongoDB connected");
+};
