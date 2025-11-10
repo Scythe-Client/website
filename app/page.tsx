@@ -1,6 +1,6 @@
 'use client';
 
-import {Sword, Zap, Shield, Download} from 'lucide-react';;
+import {Sword, Zap, Shield, Download} from 'lucide-react';
 import {
     FaDiscord,
     FaEnvelopeOpenText,

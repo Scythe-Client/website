@@ -4,13 +4,10 @@ import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
 import { FaDownload } from "react-icons/fa";
-import { useState } from "react";
 import {Shield, Sword, Zap} from "lucide-react";
 import {SCCombobox} from "@/components/custom/SCCombobox";
 
 export default function DownloadPage() {
-    const [open, setOpen] = useState(false);
-
     return (
         <div className="min-h-screen bg-black text-white">
             <Header />

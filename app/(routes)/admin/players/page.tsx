@@ -42,6 +42,7 @@ export default function PlayerManagement() {
 
     useEffect(() => {
         if (isLoaded && isSignedIn) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             void fetchPlayers();
         }
     }, [fetchPlayers, isLoaded, isSignedIn]);

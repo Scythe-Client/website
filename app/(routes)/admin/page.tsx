@@ -38,6 +38,7 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         if (isLoaded && isSignedIn) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             void fetchUsers();
         }
     }, [fetchUsers, isLoaded, isSignedIn]);
