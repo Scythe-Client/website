@@ -1,0 +1,26 @@
+.transform-style-preserve-3d {
+    transform-style: preserve-3d;
+}
+.backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+
+@keyframes rotation_481 {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(360deg); }
+}
+.animate-rotation_481 {
+    animation: rotation_481 5000ms infinite linear;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(10px); }
+}
+.animate-floating {
+    animation: floating 2600ms infinite linear;
+}

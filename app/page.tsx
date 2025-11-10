@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
+import SCCard from "@/components/custom/SCCard/SCCard";
 
 export default function Home() {
     return (
@@ -55,7 +56,23 @@ export default function Home() {
                         <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent md:text-5xl font-semibold mb-4">Unmatched Performance</h2>
                         <p className="text-gray-400 text-lg">Features designed for competitive excellence</p>
                     </div>
-
+                    <div className="flex justify-center items-center gap-8 p-4 mb-20 flex-wrap">
+                        <SCCard
+                            title="Performance"
+                            paragraph="Optimized for maximum FPS with minimal resource usage. Experience Minecraft at its finest."
+                            featured={true}
+                        />
+                        <SCCard
+                            title="PvP Optimized"
+                            paragraph="Enjoy smooth mechanics, precise hit detection, and optimized settings crafted for competitive player-versus-player combat."
+                            featured={true}
+                        />
+                        <SCCard
+                            title="24/7 Support"
+                            paragraph="Get quick and reliable help from our team whenever you need it, ensuring minimal downtime and maximum playtime."
+                            featured={true}
+                        />
+                    </div>
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="group bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-purple-500/50 p-8 rounded-xl transition-all hover:scale-105">
                             <div className="w-14 h-14 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">

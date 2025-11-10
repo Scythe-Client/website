@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 type User = {
     _id: string;
@@ -18,6 +19,11 @@ export default function AdminDashboard() {
     const [users, setUsers] = useState<User[]>([]);
     const [search, setSearch] = useState("");
     const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; userId: string; userName: string }>({
+        isOpen: false,
+        userId: '',
+        userName: ''
+    });
 
     const fetchUsers = useCallback(async () => {
         if (!isSignedIn) return;
@@ -25,9 +31,8 @@ export default function AdminDashboard() {
         try {
             const res = await axios.get(`/api/admin/dashboard?search=${search}`);
             setUsers(res.data);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (_) {
-
+        } catch (err) {
+            console.error(err);
         }
     }, [search, isSignedIn]);
 
@@ -46,13 +51,30 @@ export default function AdminDashboard() {
         }
     };
 
-    const handleUserAction = async (userId: string, action: string) => {
-        try {
-            // TODO: Implement these endpoints
-            console.log(`Action: ${action} for user: ${userId}`);
+    const handleUserAction = async (userId: string, action: string, userName?: string) => {
+        if (action === 'delete') {
+            setDeleteModal({ isOpen: true, userId, userName: userName || '' });
             setOpenMenuId(null);
-            // await axios.post(`/api/admin/user-actions`, { userId, action });
-            // void fetchUsers();
+            return;
+        }
+
+        try {
+            await axios.post(`/api/admin/user-actions`, { userId, action });
+            setOpenMenuId(null);
+            void fetchUsers();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const confirmDelete = async () => {
+        try {
+            await axios.post(`/api/admin/user-actions`, {
+                userId: deleteModal.userId,
+                action: 'delete'
+            });
+            setDeleteModal({ isOpen: false, userId: '', userName: '' });
+            void fetchUsers();
         } catch (err) {
             console.error(err);
         }
@@ -73,7 +95,7 @@ export default function AdminDashboard() {
                 <div className="text-center">
                     <div className="text-6xl mb-4">🚫</div>
                     <h1 className="text-3xl font-bold text-red-500 mb-2">Access Denied</h1>
-                    <p className="text-gray-400">You don&#39;t have permission to access this.</p>
+                    <p className="text-gray-400">You don&#39;t have permission to access this page</p>
                 </div>
             </div>
         );
@@ -89,7 +111,7 @@ export default function AdminDashboard() {
 
     return (
         <div className="p-8 min-h-screen bg-gray-900 text-white">
-            <h1 className="text-4xl font-bold mb-6">Admin Dashboard</h1>
+            <h1 className="text-4xl font-semibold mb-6">Scythe Client | Admin Panel</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
@@ -134,8 +156,14 @@ export default function AdminDashboard() {
                 placeholder="Search users..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full max-w-md mb-6 px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="mr-4 w-full max-w-md mb-6 px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
             />
+
+            <Link href="/admin/players">
+                <button className="mr-4 w-[360px] max-w-md mb-6 px-4 py-2 cursor-pointer rounded-md bg-gray-800 hover:bg-gray-800/10 text-white focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    Open Player Management
+                </button>
+            </Link>
 
             <div className="rounded-md border border-gray-700">
                 <table className="w-full table-auto text-left">
@@ -213,7 +241,7 @@ export default function AdminDashboard() {
                                                     </button>
                                                     <div className="border-t border-gray-700 my-1"></div>
                                                     <button
-                                                        onClick={() => handleUserAction(u._id, 'delete')}
+                                                        onClick={() => handleUserAction(u._id, 'delete', u.name)}
                                                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-700 text-red-500"
                                                     >
                                                         🗑️ Delete User
@@ -233,6 +261,32 @@ export default function AdminDashboard() {
                     </tbody>
                 </table>
             </div>
+
+            {deleteModal.isOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 border border-gray-700">
+                        <h2 className="text-2xl font-bold text-red-500 mb-4">Delete User</h2>
+                        <p className="text-gray-300 mb-6">
+                            Are you sure you want to delete <span className="font-semibold text-white">{deleteModal.userName}</span>?
+                            This action cannot be undone and will permanently remove the user from both the database and Clerk.
+                        </p>
+                        <div className="flex gap-3 justify-end">
+                            <button
+                                onClick={() => setDeleteModal({ isOpen: false, userId: '', userName: '' })}
+                                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                            >
+                                Delete User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

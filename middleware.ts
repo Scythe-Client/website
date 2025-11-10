@@ -10,12 +10,13 @@ export default async function middleware(
 ) {
     const res = await clerk(req, event);
     const response = res || NextResponse.next();
-    const origin = ENV.CLIENT_URL || "http://localhost:3000";
+    const origin = ENV.CLIENT_URL;
 
     response.headers.set("Access-Control-Allow-Origin", origin || "*");
     response.headers.set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
     response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     response.headers.set("Access-Control-Allow-Credentials", "true");
+    response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
 
     if (req.method === "OPTIONS") {
         return new NextResponse(null, { status: 204, headers: response.headers });
