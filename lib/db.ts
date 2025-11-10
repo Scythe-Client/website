@@ -5,7 +5,7 @@ let isConnected = false;
 
 export const connectDB = async () => {
     if (isConnected) return;
-    if (!ENV.MONGODB_URI) throw new Error("MONGO_URI not set");
+    if (!ENV.MONGODB_URI) throw new Error("MONGODB_URI not set");
 
     await mongoose.connect(ENV.MONGODB_URI);
     isConnected = true;
