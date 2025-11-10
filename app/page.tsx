@@ -125,8 +125,7 @@ export default function Home() {
                                 </div>
                             </div>
                             <button className="group cursor-not-allowed bg-gray-600 px-6 py-2.5 rounded-md font-medium text-lg shadow shadow-black transition-all hover:transform-stroke flex items-center gap-2">
-                                <Download className="w-5 h-5" />
-                                Download Now
+                                Apply for Beta
                             </button>
                         </div>
                     </div>
