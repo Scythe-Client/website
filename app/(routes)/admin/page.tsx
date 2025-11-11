@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import {toast} from "sonner";
+import { toast } from "sonner";
+import PanelGateLogin from "@/app/(routes)/admin/panel/PanelGateLogin";
 
 const ADMIN_ROLES = ["OWNER", "DEVELOPER", "ADMIN"];
 
@@ -17,119 +18,10 @@ type User = {
     role: 'OWNER' | 'DEVELOPER' | 'ADMIN' | 'STAFF' | 'PARTNER' | 'DONATOR' | 'BETA TESTER' | 'DEFAULT';
 };
 
-interface PanelGateLoginProps {
-    onLoginSuccess: () => void;
-}
-
-
-function PanelGateLogin({ onLoginSuccess }: PanelGateLoginProps) {
-    const [gateaId, setGateaId] = useState('');
-    const [userId, setUserId] = useState('');
-    const [token, setToken] = useState('');
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleCustomLogin = async () => {
-        setError(null);
-        setIsLoading(true);
-
-        if (!userId.trim()) {
-            setError('User ID is required.');
-            setIsLoading(false);
-            return;
-        }
-
-        if (!gateaId && !token.trim()) {
-            setError('Token is required when not using GateA.');
-            setIsLoading(false);
-            return;
-        }
-
-        try {
-            const res = await axios.post('/api/admin/auth/gate', {
-                gateAId: gateaId || undefined,
-                userId: userId.trim(),
-                token: token.trim()
-            });
-
-            if (res.status === 200) {
-                onLoginSuccess();
-            }
-        } catch (err: any) {
-            const errMsg = err.response?.data?.error || 'Authentication failed';
-            setError(errMsg);
-            toast.error(errMsg);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="text-center">
-                <div className="bg-gray-200 w-[400px] h-auto p-6 shadow-gray-400 shadow-lg rounded-sm">
-                    <h2 className="font-medium text-3xl pt-2">Panel Gate Login</h2>
-                    <p className="text-red-500 mt-2 h-6">{error}</p>
-
-                    <div>
-                        <h4 className="text-[15px] pt-4 text-start pl-2">User ID</h4>
-                        <input
-                            placeholder="user_2j3k4l..."
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            className="p-2 w-[340px] h-[32px] bg-gray-300 border border-gray-400 hover:bg-gray-300/50 rounded-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <h4 className="text-[15px] pt-2 text-start pl-2">GateA ID</h4>
-                        <input
-                            placeholder="sc_gatea_..."
-                            value={gateaId}
-                            onChange={(e) => setGateaId(e.target.value)}
-                            className="p-2 w-[340px] h-[32px] bg-gray-300 border border-gray-400 hover:bg-gray-300/50 rounded-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        />
-                    </div>
-
-                    <div className="flex items-center mt-6 w-full max-w-sm mx-auto">
-                        <div className="flex-grow ml-4 border-t border-gray-400"></div>
-                        <span className="flex-shrink mx-4 text-gray-600 text-sm font-medium">
-                            or
-                        </span>
-                        <div className="flex-grow mr-4 border-t border-gray-400"></div>
-                    </div>
-
-                    <div>
-                        <h4 className="text-[15px] pt-4 text-start pl-2">Token</h4>
-                        <input
-                            placeholder="scapi_..."
-                            type="password"
-                            value={token}
-                            onChange={(e) => setToken(e.target.value)}
-                            className="p-2 w-[340px] h-[32px] bg-gray-300 border border-gray-400 hover:bg-gray-300/50 rounded-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
-                        />
-                    </div>
-
-                    <button
-                        onClick={handleCustomLogin}
-                        disabled={isLoading}
-                        className={`w-[248px] h-[32px] rounded-sm mt-8 mb-4 cursor-pointer shadow active:bg-gray-500 transition-all ${
-                            isLoading
-                                ? 'bg-gray-500 cursor-not-allowed'
-                                : 'bg-gray-800 text-white shadow-black hover:bg-gray-600 hover:shadow-gray-800'
-                        }`}
-                    >
-                        {isLoading ? 'Logging in...' : 'Login'}
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-}
-
 export default function AdminDashboard() {
     const { isLoaded, isSignedIn, user } = useUser();
     const [isSecondaryAuthComplete, setIsSecondaryAuthComplete] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(true);
 
     const [users, setUsers] = useState<User[]>([]);
     const [search, setSearch] = useState("");
@@ -152,8 +44,28 @@ export default function AdminDashboard() {
     }, [search, isSignedIn, isSecondaryAuthComplete]);
 
     useEffect(() => {
+        const verifySession = async () => {
+            if (!isLoaded || !isSignedIn) {
+                setIsVerifying(false);
+                return;
+            }
+
+            try {
+                const res = await axios.get('/api/admin/auth/verify');
+                if (res.data.valid) {
+                    setIsSecondaryAuthComplete(true);
+                }
+            } catch (err) {
+            } finally {
+                setIsVerifying(false);
+            }
+        };
+
+        verifySession();
+    }, [isLoaded, isSignedIn]);
+
+    useEffect(() => {
         if (isLoaded && isSignedIn && isSecondaryAuthComplete) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             void fetchUsers();
         }
     }, [fetchUsers, isLoaded, isSignedIn, isSecondaryAuthComplete]);
@@ -198,11 +110,11 @@ export default function AdminDashboard() {
 
     const userHasAdminRole = ADMIN_ROLES.includes(user?.publicMetadata.role as string || "");
 
-    if (!isLoaded) return (
+    if (!isLoaded || isVerifying) return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                <p className="text-gray-400 text-lg">Loading...</p>
+                <p className="text-gray-400 text-lg">Verifying session...</p>
             </div>
         </div>
     );
@@ -262,7 +174,7 @@ export default function AdminDashboard() {
                 </div>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-6">
+            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-2">
                 <h2 className="text-xl font-semibold mb-4">Role Distribution</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {roles.map(role => (
@@ -279,11 +191,11 @@ export default function AdminDashboard() {
                 placeholder="Search users..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="mr-4 w-full max-w-md mb-6 px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="mr-4 w-full max-w-md mb-6 px-4 h-[36px] rounded-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-gray-600"
             />
 
             <Link href="/admin/players">
-                <button className="mr-4 w-[360px] max-w-md mb-6 px-4 py-2 cursor-pointer rounded-md bg-gray-800 hover:bg-gray-800/10 text-white focus:outline-none focus:ring-2 focus:ring-purple-600">
+                <button className="w-[248px] h-[32px] rounded-sm mt-8 mb-4 cursor-pointer active:bg-gray-600 transition-all bg-gray-900 text-white shadow-black shadow-md hover:bg-gray-700">
                     Open Player Management
                 </button>
             </Link>

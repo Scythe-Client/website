@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import PanelGateLogin from "@/app/(routes)/admin/panel/PanelGateLogin";
+import Link from "next/link";
 
 type Player = {
     _id: string;
@@ -17,10 +19,14 @@ type Player = {
     firstSeen: Date;
 };
 
+const ADMIN_ROLES = ["OWNER", "DEVELOPER", "ADMIN"];
+
 export default function PlayerManagement() {
     const { isLoaded, isSignedIn, user } = useUser();
     const [players, setPlayers] = useState<Player[]>([]);
+    const [isSecondaryAuthComplete, setIsSecondaryAuthComplete] = useState(false);
     const [search, setSearch] = useState("");
+    const [isVerifying, setIsVerifying] = useState(true);
     const [openMenuId, setOpenMenuId] = useState<string | null>(null);
     const [banModal, setBanModal] = useState<{ isOpen: boolean; playerId: string; playerName: string }>({
         isOpen: false,
@@ -41,11 +47,31 @@ export default function PlayerManagement() {
     }, [search, isSignedIn]);
 
     useEffect(() => {
-        if (isLoaded && isSignedIn) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
+        const verifySession = async () => {
+            if (!isLoaded || !isSignedIn) {
+                setIsVerifying(false);
+                return;
+            }
+
+            try {
+                const res = await axios.get('/api/admin/auth/verify');
+                if (res.data.valid) {
+                    setIsSecondaryAuthComplete(true);
+                }
+            } catch (err) {
+            } finally {
+                setIsVerifying(false);
+            }
+        };
+
+        verifySession();
+    }, [isLoaded, isSignedIn]);
+
+    useEffect(() => {
+        if (isLoaded && isSignedIn && isSecondaryAuthComplete) {
             void fetchPlayers();
         }
-    }, [fetchPlayers, isLoaded, isSignedIn]);
+    }, [fetchPlayers, isLoaded, isSignedIn, isSecondaryAuthComplete]);
 
     const updateRole = async (playerId: string, role: Player['role']) => {
         try {
@@ -89,25 +115,32 @@ export default function PlayerManagement() {
         }
     };
 
-    if (!isLoaded) return (
+    const userHasAdminRole = ADMIN_ROLES.includes(user?.publicMetadata.role as string || "");
+
+    if (!isLoaded || isVerifying) return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                <p className="text-gray-400 text-lg">Loading...</p>
+                <p className="text-gray-400 text-lg">Verifying session...</p>
             </div>
         </div>
     );
 
-    if (!isSignedIn || !["OWNER","DEVELOPER","ADMIN"].includes(user?.publicMetadata.role as string || "")) {
+    if (!isSignedIn || !userHasAdminRole) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-900">
+            <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="text-center">
-                    <div className="text-6xl mb-4">🚫</div>
-                    <h1 className="text-3xl font-bold text-red-500 mb-2">Access Denied</h1>
-                    <p className="text-gray-400">You don&#39;t have permission to access this page</p>
+                    <h1 className="text-4xl text-red-600 font-semibold">Access Denied</h1>
+                    <p className="text-gray-600 text-lg">
+                        You must be signed in with a required role to access this route.
+                    </p>
                 </div>
             </div>
         );
+    }
+
+    if (isSignedIn && userHasAdminRole && !isSecondaryAuthComplete) {
+        return <PanelGateLogin onLoginSuccess={() => setIsSecondaryAuthComplete(true)} />;
     }
 
     const roles: Player['role'][] = ["OWNER","DEVELOPER","ADMIN","STAFF","PARTNER","DONATOR","BETA TESTER","DEFAULT"];
@@ -118,9 +151,9 @@ export default function PlayerManagement() {
 
     return (
         <div className="p-8 min-h-screen bg-gray-900 text-white">
-            <h1 className="text-4xl font-semibold mb-6">Player Management</h1>
+            <h1 className="text-4xl font-semibold mb-6">Scythe Client | Player Management</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
                 <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
                     <p className="text-gray-400 text-sm mb-1">Total Players</p>
                     <p className="text-3xl font-bold text-purple-400">{totalPlayers}</p>
@@ -142,8 +175,14 @@ export default function PlayerManagement() {
                 placeholder="Search by IGN or UUID..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full max-w-md mb-6 px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="mr-4 w-full max-w-md mb-6 px-4 h-[36px] rounded-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-gray-600"
             />
+
+            <Link href="/admin">
+                <button className="w-[248px] h-[32px] rounded-sm mt-8 mb-4 cursor-pointer active:bg-gray-600 transition-all bg-gray-900 text-white shadow-black shadow-md hover:bg-gray-700">
+                    Back to Admin Panel
+                </button>
+            </Link>
 
             <div className="rounded-md border border-gray-700">
                 <table className="w-full table-auto text-left">

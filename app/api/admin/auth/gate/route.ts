@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { gateAId, userId, token } = body;
 
-    if (!userId || typeof userId !== 'string') return NextResponse.json({ error: "Invalid or missing userId" }, { status: 400 });
-    if (gateAId && typeof gateAId !== 'string') return NextResponse.json({ error: "Invalid gateAId" }, { status: 400 });
-    if (!gateAId && (!token || typeof token !== 'string')) return NextResponse.json({ error: "Invalid or missing token" }, { status: 400 });
+    if (!userId  || typeof userId !== 'string')            return NextResponse.json({ error: "Invalid or missing userId" }, { status: 400 });
+    if (gateAId  && typeof gateAId !== 'string')           return NextResponse.json({ error: "Invalid gateAId" },           { status: 400 });
+    if (!gateAId && (!token || typeof token !== 'string')) return NextResponse.json({ error: "Invalid or missing token" },  { status: 400 });
 
     function safeCompare(a: string, b: string): boolean {
         const encoder = new TextEncoder();
