@@ -24,3 +24,13 @@
 .animate-floating {
     animation: floating 2600ms infinite linear;
 }
+
+.layer-bg {
+    z-index: 0;
+    position: absolute;
+}
+
+.layer-content {
+    z-index: 1;
+    position: relative;
+}

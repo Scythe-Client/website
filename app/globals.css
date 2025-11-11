@@ -126,6 +126,13 @@ html {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../public/fonts/Minecraft.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -135,4 +142,29 @@ html {
     @apply font-sans;
     @apply overflow-y-scroll
   }
+}
+
+.text-gradient-animated {
+    background-size: 200% 100%;
+    background-image: linear-gradient(
+            to right,
+            #4b3177,
+            #9677c4,
+            #432e6e
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
