@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/themes';
 import {connectDB} from "@/lib/db";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const poppins = Poppins({
     variable: "--font-poppins",
@@ -37,7 +38,8 @@ export default function RootLayout({
               },
           }}
       >
-      <html lang="en" className={poppins.variable}>
+        <SpeedInsights />
+        <html lang="en" className={poppins.variable}>
             <body className="antialiased">{children}</body>
         </html>
     </ClerkProvider>

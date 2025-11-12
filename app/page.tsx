@@ -9,13 +9,12 @@ import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
 import SCCard from "@/components/custom/SCCard/SCCard";
-import {ContainerTextFlip} from "@/components/ui/container-text-flip";
 
 export default function Home() {
     return (
         <div className="min-h-screen bg-black text-white">
             <Header />
-            <section className="relative pt-36 pb-10 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
+            <section className="relative pt-48 pb-10 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black"></div>
                 <div className="relative max-w-7xl mx-auto">
                     <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 text-gradient-animated">
