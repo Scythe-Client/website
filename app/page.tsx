@@ -9,13 +9,13 @@ import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
 import SCCard from "@/components/custom/SCCard/SCCard";
-import scStyles from '@/components/custom/SCCard/SCCard.module.css';
+import {ContainerTextFlip} from "@/components/ui/container-text-flip";
 
 export default function Home() {
     return (
         <div className="min-h-screen bg-black text-white">
             <Header />
-            <section className="relative pt-48 pb-10 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
+            <section className="relative pt-36 pb-10 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black"></div>
                 <div className="relative max-w-7xl mx-auto">
                     <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 text-gradient-animated">
@@ -26,14 +26,14 @@ export default function Home() {
                         The client that keeps up when every click, swing, and step counts.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-start items-center">
-                        <Link href="https://discord.scytheclient.com">
+                        <Link href="https://discord.scytheclient.com" target="_blank" rel="noopener noreferrer">
                             <button className="group h-[45px] cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] shadow-[#3a2a5a] shadow-md hover:shadow-lg px-6 rounded-md font-medium text-lg text-white transition-all flex items-center gap-2">
                                 <FaEnvelopeOpenText className="w-4 h-4" />
                                 Join the Waitlist
                                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                             </button>
                         </Link>
-                        <Link href="https://forms.gle/rSKiydw8a9zRhP1AA">
+                        <Link href="https://forms.gle/rSKiydw8a9zRhP1AA" target="_blank" rel="noopener noreferrer">
                             <button className="border-2 h-[45px] border-gray-700 cursor-pointer hover:border-[#7a6a8a] px-6 rounded-lg font-medium text-lg shadow-[#3a2a5a] shadow-md transition-all hover:transform-stroke hover:shadow-lg">
                                 Apply for Beta
                             </button>
@@ -45,7 +45,7 @@ export default function Home() {
                             <span>100+ Active Users</span>
                         </div>
                         <div>•</div>
-                        <div>Windows / Mac / Linux</div>
+                        <div>Windows</div>
                         <div>•</div>
                         <div>Free Forever</div>
                     </div>
@@ -135,11 +135,9 @@ export default function Home() {
                                 <p className="text-gray-400 mb-4">Compatible with Minecraft 1.8 and 1.21.4</p>
                                 <div className="flex flex-wrap gap-3">
                                     <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">Windows</span>
-                                    <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">macOS</span>
-                                    <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">Linux</span>
                                 </div>
                             </div>
-                            <Link href="https://forms.gle/rSKiydw8a9zRhP1AA">
+                            <Link href="https://forms.gle/rSKiydw8a9zRhP1AA" target="_blank" rel="noopener noreferrer">
                                 <button className="group h-[45px] cursor-pointer bg-gradient-to-r from-[#3a2a5a] via-[#4a3a6a] to-[#2a1a4a] shadow-[#3a2a5a] shadow-md hover:shadow-lg px-6 rounded-md font-medium text-lg text-white transition-all flex items-center gap-2">
                                     Apply for Beta
                                 </button>

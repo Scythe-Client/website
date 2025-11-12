@@ -5,6 +5,7 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import PanelGateLogin from "@/app/(routes)/admin/panel/PanelGateLogin";
 import Link from "next/link";
+import * as Toggle from "@radix-ui/react-toggle";
 
 type Player = {
     _id: string;
@@ -27,6 +28,8 @@ export default function PlayerManagement() {
     const [isSecondaryAuthComplete, setIsSecondaryAuthComplete] = useState(false);
     const [search, setSearch] = useState("");
     const [isVerifying, setIsVerifying] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isMounted, setIsMounted] = useState(false);
     const [openMenuId, setOpenMenuId] = useState<string | null>(null);
     const [banModal, setBanModal] = useState<{ isOpen: boolean; playerId: string; playerName: string }>({
         isOpen: false,
@@ -34,6 +37,19 @@ export default function PlayerManagement() {
         playerName: ''
     });
     const [banReason, setBanReason] = useState("");
+
+    useEffect(() => {
+        setIsMounted(true);
+        const savedTheme = localStorage.getItem('admin-theme');
+        if (savedTheme === 'light') {
+            setIsDarkMode(false);
+        }
+    }, []);
+
+    const toggleTheme = (pressed: boolean) => {
+        setIsDarkMode(!pressed);
+        localStorage.setItem('admin-theme', !pressed ? 'dark' : 'light');
+    };
 
     const fetchPlayers = useCallback(async () => {
         if (!isSignedIn) return;
@@ -117,18 +133,39 @@ export default function PlayerManagement() {
 
     const userHasAdminRole = ADMIN_ROLES.includes(user?.publicMetadata.role as string || "");
 
+    const theme = {
+        bg: isDarkMode ? 'bg-gray-900' : 'bg-gray-50',
+        card: isDarkMode ? 'bg-gray-800' : 'bg-white shadow-md shadow-gray-400',
+        border: isDarkMode ? 'border-gray-700' : 'border-gray-200',
+        text: isDarkMode ? 'text-white' : 'text-gray-950',
+        textSecondary: isDarkMode ? 'text-gray-400' : 'text-gray-600',
+        hover: isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-50',
+        input: isDarkMode ? 'bg-gray-800 text-white focus:ring-gray-600' : 'bg-white text-gray-900 border border-gray-300 focus:ring-purple-500',
+        button: isDarkMode ? 'bg-gray-900 hover:bg-gray-700 shadow-black' : 'bg-gray-900 text-white hover:bg-gray-700 active:bg-gray-500',
+        tableHeader: isDarkMode ? 'bg-gray-800' : 'bg-gray-100',
+        select: isDarkMode ? 'bg-gray-800 text-white focus:ring-purple-600' : 'bg-white text-gray-900 border border-gray-300 focus:ring-purple-500',
+        menuBg: isDarkMode ? 'bg-gray-800' : 'bg-white',
+        menuHover: isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100',
+        modalBg: isDarkMode ? 'bg-gray-800' : 'bg-white',
+        modalOverlay: isDarkMode ? 'bg-gray-600 bg-opacity-50' : 'bg-gray-600 bg-blur bg-opacity-30',
+        statusOnline: isDarkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-700',
+        statusOffline: isDarkMode ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-600',
+        statusDot: isDarkMode ? 'bg-green-400' : 'bg-green-500',
+        statusDotOff: isDarkMode ? 'bg-gray-500' : 'bg-gray-400',
+    };
+
     if (!isLoaded || isVerifying) return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className={`flex items-center justify-center min-h-screen ${theme.bg}`}>
             <div className="text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-                <p className="text-gray-400 text-lg">Verifying session...</p>
+                <p className={`${theme.textSecondary} text-lg`}>Verifying session...</p>
             </div>
         </div>
     );
 
     if (!isSignedIn || !userHasAdminRole) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className={`flex items-center justify-center min-h-screen ${isDarkMode ? 'bg-gray-100' : 'bg-gray-50'}`}>
                 <div className="text-center">
                     <h1 className="text-4xl text-red-600 font-semibold">Access Denied</h1>
                     <p className="text-gray-600 text-lg">
@@ -150,22 +187,41 @@ export default function PlayerManagement() {
     const bannedPlayers = players.filter(p => p.isBanned).length;
 
     return (
-        <div className="p-8 min-h-screen bg-gray-900 text-white">
-            <h1 className="text-4xl font-semibold mb-6">Scythe Client | Player Management</h1>
+        <div className={`p-8 min-h-screen ${theme.bg} ${theme.text}`}>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-4xl font-semibold">Scythe Client | Player Management</h1>
+
+                <Toggle.Root
+                    pressed={!isDarkMode}
+                    onPressedChange={toggleTheme}
+                    className={`p-2 rounded-lg ${theme.card} ${theme.border} border transition-colors data-[state=on]:bg-gray-200`}
+                    aria-label="Toggle theme"
+                >
+                    {isDarkMode ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    )}
+                </Toggle.Root>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-                <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Total Players</p>
+                <div className={`${theme.card} rounded-lg p-6 border ${theme.border}`}>
+                    <p className={`${theme.textSecondary} text-sm mb-1`}>Total Players</p>
                     <p className="text-3xl font-bold text-purple-400">{totalPlayers}</p>
                 </div>
 
-                <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Online Now</p>
+                <div className={`${theme.card} rounded-lg p-6 border ${theme.border}`}>
+                    <p className={`${theme.textSecondary} text-sm mb-1`}>Online Now</p>
                     <p className="text-3xl font-bold text-green-400">{onlinePlayers}</p>
                 </div>
 
-                <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Banned</p>
+                <div className={`${theme.card} rounded-lg p-6 border ${theme.border}`}>
+                    <p className={`${theme.textSecondary} text-sm mb-1`}>Banned</p>
                     <p className="text-3xl font-bold text-red-400">{bannedPlayers}</p>
                 </div>
             </div>
@@ -175,63 +231,63 @@ export default function PlayerManagement() {
                 placeholder="Search by IGN or UUID..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="mr-4 w-full max-w-md mb-6 px-4 h-[36px] rounded-md bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-gray-600"
+                className={`mr-4 w-full max-w-md mb-6 px-4 h-[36px] rounded-md ${theme.input} focus:outline-none focus:ring-1`}
             />
 
             <Link href="/admin">
-                <button className="w-[248px] h-[32px] rounded-sm mt-8 mb-4 cursor-pointer active:bg-gray-600 transition-all bg-gray-900 text-white shadow-black shadow-md hover:bg-gray-700">
+                <button className={`w-[248px] h-[32px] rounded-sm mt-8 mb-4 cursor-pointer active:bg-gray-600 transition-all ${theme.button} shadow-md`}>
                     Back to Admin Panel
                 </button>
             </Link>
 
-            <div className="rounded-md border border-gray-700">
+            <div className={`rounded-md border ${theme.border}`}>
                 <table className="w-full table-auto text-left">
-                    <thead className="bg-gray-800">
+                    <thead className={theme.tableHeader}>
                     <tr>
-                        <th className="px-4 py-2 border-b border-gray-700">IGN</th>
-                        <th className="px-4 py-2 border-b border-gray-700">UUID</th>
-                        <th className="px-4 py-2 border-b border-gray-700">Status</th>
-                        <th className="px-4 py-2 border-b border-gray-700">Role</th>
-                        <th className="px-4 py-2 border-b border-gray-700">Change Role</th>
-                        <th className="px-4 py-2 border-b border-gray-700">Actions</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>IGN</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>UUID</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>Status</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>Role</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>Change Role</th>
+                        <th className={`px-4 py-2 border-b ${theme.border}`}>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {players.length ? players.map(p => (
-                        <tr key={p._id} className="hover:bg-gray-800">
-                            <td className="px-4 py-2 border-b border-gray-700">
+                        <tr key={p._id} className={theme.hover}>
+                            <td className={`px-4 py-2 border-b ${theme.border}`}>
                                 <div className="flex items-center gap-2">
                                     {p.ign}
                                     {p.isBanned && <span className="text-red-500 text-xs">🚫 BANNED</span>}
                                 </div>
                             </td>
-                            <td className="px-4 py-2 border-b border-gray-700 text-sm text-gray-400">{p.uuid.slice(0, 8)}...</td>
-                            <td className="px-4 py-2 border-b border-gray-700">
+                            <td className={`px-4 py-2 border-b ${theme.border} text-sm ${theme.textSecondary}`}>{p.uuid.slice(0, 8)}...</td>
+                            <td className={`px-4 py-2 border-b ${theme.border}`}>
                                 <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
-                                    p.isOnline ? 'bg-green-900 text-green-300' : 'bg-gray-700 text-gray-400'
+                                    p.isOnline ? theme.statusOnline : theme.statusOffline
                                 }`}>
-                                    <span className={`w-2 h-2 rounded-full ${p.isOnline ? 'bg-green-400' : 'bg-gray-500'}`}></span>
+                                    <span className={`w-2 h-2 rounded-full ${p.isOnline ? theme.statusDot : theme.statusDotOff}`}></span>
                                     {p.isOnline ? 'Online' : 'Offline'}
                                 </span>
                             </td>
-                            <td className="px-4 py-2 border-b border-gray-700">{p.role}</td>
-                            <td className="px-4 py-2 border-b border-gray-700">
+                            <td className={`px-4 py-2 border-b ${theme.border}`}>{p.role}</td>
+                            <td className={`px-4 py-2 border-b ${theme.border}`}>
                                 <select
                                     value={p.role}
                                     onChange={(e) => updateRole(p._id, e.target.value as Player['role'])}
-                                    className="bg-gray-800 px-2 py-1 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-600"
+                                    className={`${theme.select} px-2 py-1 rounded-md focus:outline-none focus:ring-2`}
                                     disabled={p.isBanned}
                                 >
                                     {roles.map(r => <option key={r} value={r}>{r}</option>)}
                                 </select>
                             </td>
-                            <td className="px-4 py-2 border-b border-gray-700 relative">
+                            <td className={`px-4 py-2 border-b ${theme.border} relative`}>
                                 <div className="relative">
                                     <button
                                         onClick={() => {
                                             setOpenMenuId(openMenuId === p._id ? null : p._id);
                                         }}
-                                        className="p-2 hover:bg-gray-700 rounded-md transition-colors"
+                                        className={`p-2 ${theme.menuHover} rounded-md transition-colors`}
                                         title="Player Actions"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -245,19 +301,19 @@ export default function PlayerManagement() {
                                                 className="fixed inset-0 z-10"
                                                 onClick={() => setOpenMenuId(null)}
                                             />
-                                            <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg border border-gray-700 z-20">
+                                            <div className={`absolute right-0 mt-2 w-48 ${theme.menuBg} rounded-md shadow-lg border ${theme.border} z-20`}>
                                                 <div className="py-1">
                                                     {!p.isBanned ? (
                                                         <button
                                                             onClick={() => handlePlayerAction(p._id, 'hwid-ban', p.ign)}
-                                                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-700 text-red-400"
+                                                            className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-red-400`}
                                                         >
                                                             🔒 HWID Ban
                                                         </button>
                                                     ) : (
                                                         <button
                                                             onClick={() => handlePlayerAction(p._id, 'unban', p.ign)}
-                                                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-700 text-green-400"
+                                                            className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-green-400`}
                                                         >
                                                             ✅ Unban Player
                                                         </button>
@@ -271,7 +327,7 @@ export default function PlayerManagement() {
                         </tr>
                     )) : (
                         <tr>
-                            <td colSpan={6} className="px-4 py-6 text-center text-gray-500">No players found</td>
+                            <td colSpan={6} className={`px-4 py-6 text-center ${theme.textSecondary}`}>No players found</td>
                         </tr>
                     )}
                     </tbody>
@@ -280,18 +336,18 @@ export default function PlayerManagement() {
 
             {/* Ban Confirmation Modal */}
             {banModal.isOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 border border-gray-700">
+                <div className={`fixed inset-0 ${theme.modalOverlay} flex items-center justify-center z-50`}>
+                    <div className={`${theme.modalBg} rounded-lg p-6 max-w-md w-full mx-4 border ${theme.border}`}>
                         <h2 className="text-2xl font-bold text-red-500 mb-4">HWID Ban Player</h2>
-                        <p className="text-gray-300 mb-4">
-                            Are you sure you want to HWID ban <span className="font-semibold text-white">{banModal.playerName}</span>?
+                        <p className={`${theme.textSecondary} mb-4`}>
+                            Are you sure you want to HWID ban <span className={`font-semibold ${theme.text}`}>{banModal.playerName}</span>?
                             This will prevent them from accessing the client on this hardware.
                         </p>
                         <textarea
                             placeholder="Ban reason (optional)..."
                             value={banReason}
                             onChange={(e) => setBanReason(e.target.value)}
-                            className="w-full px-4 py-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-600 mb-4"
+                            className={`w-full px-4 py-2 rounded-md ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} ${theme.text} focus:outline-none focus:ring-2 focus:ring-red-600 mb-4`}
                             rows={3}
                         />
                         <div className="flex gap-3 justify-end">
@@ -300,7 +356,7 @@ export default function PlayerManagement() {
                                     setBanModal({ isOpen: false, playerId: '', playerName: '' });
                                     setBanReason("");
                                 }}
-                                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors"
+                                className={`px-4 py-2 ${isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} rounded-md transition-colors`}
                             >
                                 Cancel
                             </button>
