@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
                 }, { status: 403 });
             }
 
+            player.ign = ign;
             player.isOnline = true;
             player.lastSeen = new Date();
             if (hwid && !player.hwid) player.hwid = hwid;

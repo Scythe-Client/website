@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema(
             enum: ['OWNER', 'DEVELOPER', 'ADMIN', 'STAFF', 'PARTNER', 'DONATOR', 'BETA TESTER', 'DEFAULT'],
             default: 'DEFAULT',
         },
+        isBanned: { type: Boolean, default: false, required: true },
+        isIPBanned: { type: Boolean, default: false, required: true },
     },
     { timestamps: true }
 );

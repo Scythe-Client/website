@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-const PlayerSchema = new mongoose.Schema({
-    ign: { type: String, required: true, unique: true },
+const playerSchema = new mongoose.Schema({
+    ign: { type: String, required: true },
     uuid: { type: String, required: true, unique: true },
     hwid: { type: String, default: null },
     role: {
@@ -16,4 +16,4 @@ const PlayerSchema = new mongoose.Schema({
     firstSeen: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-export default mongoose.models.Player || mongoose.model('Player', PlayerSchema);
+export default mongoose.models.Player || mongoose.model('Player', playerSchema);

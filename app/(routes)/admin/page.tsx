@@ -4,9 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { toast } from "sonner";
 import * as Toggle from "@radix-ui/react-toggle";
 import PanelGateLogin from "@/app/(routes)/admin/panel/PanelGateLogin";
+import {
+    HiOutlineUserMinus,
+    HiOutlineUserPlus,
+    HiOutlineGlobeAlt,
+    HiOutlineKey,
+    HiOutlineTrash, HiOutlineEllipsisVertical,
+} from "react-icons/hi2";
+import {HiOutlineGlobe} from "react-icons/hi";
+
 
 const ADMIN_ROLES = ["OWNER", "DEVELOPER", "ADMIN"];
 
@@ -284,12 +292,10 @@ export default function AdminDashboard() {
                                         onClick={() => {
                                             setOpenMenuId(openMenuId === u._id ? null : u._id);
                                         }}
-                                        className={`p-2 ${theme.menuHover} rounded-md transition-colors`}
+                                        className={`p-2 ml-3 ${theme.menuHover} rounded-md transition-colors`}
                                         title="User Actions"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                                        </svg>
+                                        <HiOutlineEllipsisVertical className="h-5 w-5" />
                                     </button>
 
                                     {openMenuId === u._id && (
@@ -303,35 +309,49 @@ export default function AdminDashboard() {
                                             >
                                                 <div className="py-1">
                                                     <button
-                                                        onClick={() => handleUserAction(u._id, 'suspend')}
-                                                        className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-yellow-400`}
+                                                        onClick={() => handleUserAction(u._id, 'unban')}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-green-400`}
                                                     >
-                                                        ⏸️ Suspend User
+                                                        <HiOutlineUserPlus className="h-4 w-4" /> Unban User
                                                     </button>
+
+                                                    <button
+                                                        onClick={() => handleUserAction(u._id, 'un-ip-ban')}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-green-400`}
+                                                    >
+                                                        <HiOutlineGlobe className="h-4 w-4" /> Un IP Ban
+                                                    </button>
+
+                                                    <div className={`border-t ${theme.border} my-1`}></div>
+
                                                     <button
                                                         onClick={() => handleUserAction(u._id, 'ban')}
-                                                        className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-orange-400`}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-orange-400`}
                                                     >
-                                                        🚫 Ban User
+                                                        <HiOutlineUserMinus className="h-4 w-4" /> Ban User
                                                     </button>
+
                                                     <button
                                                         onClick={() => handleUserAction(u._id, 'ip-ban')}
-                                                        className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-red-400`}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-red-400`}
                                                     >
-                                                        🔒 IP Ban
+                                                        <HiOutlineGlobeAlt className="h-4 w-4" /> IP Ban
                                                     </button>
+
                                                     <button
                                                         onClick={() => handleUserAction(u._id, 'reset-password')}
-                                                        className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-blue-400`}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-blue-400`}
                                                     >
-                                                        🔑 Reset Password
+                                                        <HiOutlineKey className="h-4 w-4" /> Reset Password
                                                     </button>
+
                                                     <div className={`border-t ${theme.border} my-1`}></div>
+
                                                     <button
                                                         onClick={() => handleUserAction(u._id, 'delete', u.name)}
-                                                        className={`w-full text-left px-4 py-2 text-sm ${theme.menuHover} text-red-500`}
+                                                        className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${theme.menuHover} text-red-500`}
                                                     >
-                                                        🗑️ Delete User
+                                                        <HiOutlineTrash className="h-4 w-4" /> Delete User
                                                     </button>
                                                 </div>
                                             </div>

@@ -47,12 +47,20 @@ export async function PATCH(req: NextRequest) {
         const body = await req.json();
         const { playerId, role: newRole } = body;
 
+        if (!playerId) {
+            return NextResponse.json({ error: "Missing playerId" }, { status: 400 });
+        }
+
         const allowedRoles = ["OWNER", "DEVELOPER", "ADMIN", "STAFF", "PARTNER", "DONATOR", "BETA TESTER", "DEFAULT"];
         if (!allowedRoles.includes(newRole)) {
             return NextResponse.json({ error: "Invalid role" }, { status: 400 });
         }
 
         const updated = await Player.findByIdAndUpdate(playerId, { role: newRole }, { new: true });
+
+        if (!updated) {
+            return NextResponse.json({ error: "Player not found" }, { status: 404 });
+        }
 
         return NextResponse.json(updated);
     } catch (error) {

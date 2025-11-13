@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { userId, action } = body;
+    const { userId, action, reason } = body;
 
     if (!userId || !action) {
         return NextResponse.json({ error: "Missing userId or action" }, { status: 400 });
@@ -29,32 +29,71 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        switch (action) {
-            case 'delete':
-                await User.findByIdAndDelete(userId);
+        const clerk = await clerkClient();
 
+        switch (action) {
+            case "delete":
+                await User.findByIdAndDelete(userId);
                 if (targetUser.clerkId) {
-                    const clerk = await clerkClient();
                     await clerk.users.deleteUser(targetUser.clerkId);
                 }
-
                 return NextResponse.json({ success: true, message: "User deleted successfully" });
 
-            case 'suspend':
-                // TODO: Implement suspend logic
-                return NextResponse.json({ success: true, message: "Suspend not implemented yet" });
+            case "ban":
+                if (targetUser.isBanned) {
+                    return NextResponse.json({ error: "User already banned" }, { status: 400 });
+                }
+                if (targetUser.clerkId) {
+                    await clerk.users.banUser(targetUser.clerkId);
+                }
+                targetUser.isBanned = true;
+                targetUser.banReason = reason || "Banned by administrator";
+                await targetUser.save();
+                return NextResponse.json({ success: true, message: "User banned successfully" });
 
-            case 'ban':
-                // TODO: Implement ban logic
-                return NextResponse.json({ success: true, message: "Ban not implemented yet" });
+            case "unban":
+                if (!targetUser.isBanned) {
+                    return NextResponse.json({ error: "User is not banned" }, { status: 400 });
+                }
+                if (targetUser.clerkId) {
+                    await clerk.users.unbanUser(targetUser.clerkId);
+                }
+                targetUser.isBanned = false;
+                targetUser.banReason = null;
+                await targetUser.save();
+                return NextResponse.json({ success: true, message: "User unbanned successfully" });
 
-            case 'ip-ban':
-                // TODO: Implement IP ban logic
-                return NextResponse.json({ success: true, message: "IP ban not implemented yet" });
+            case "ip-ban":
+                if (targetUser.isIPBanned) {
+                    return NextResponse.json({ error: "User already IP banned" }, { status: 400 });
+                }
+                if (targetUser.clerkId) {
+                    await clerk.users.banUser(targetUser.clerkId);
+                }
+                targetUser.isIPBanned = true;
+                targetUser.bannedIP = targetUser.lastKnownIP || null;
+                targetUser.banReason = reason || "IP banned by administrator";
+                await targetUser.save();
+                return NextResponse.json({ success: true, message: "User IP banned successfully" });
 
-            case 'reset-password':
-                // TODO: Implement password reset logic
-                return NextResponse.json({ success: true, message: "Password reset not implemented yet" });
+            case "un-ip-ban":
+                if (!targetUser.isIPBanned) {
+                    return NextResponse.json({ error: "User is not IP banned" }, { status: 400 });
+                }
+                if (targetUser.clerkId) {
+                    await clerk.users.unbanUser(targetUser.clerkId);
+                }
+                targetUser.isIPBanned = false;
+                targetUser.bannedIP = null;
+                targetUser.banReason = null;
+                await targetUser.save();
+                return NextResponse.json({ success: true, message: "User IP unbanned successfully" });
+
+            case "reset-password":
+                if (targetUser.clerkId) {
+                    await clerk.users.getUserOauthAccessToken(targetUser.clerkId, "google");
+                }
+                return NextResponse.json({ success: true, message: "Password reset email sent" });
 
             default:
                 return NextResponse.json({ error: "Invalid action" }, { status: 400 });

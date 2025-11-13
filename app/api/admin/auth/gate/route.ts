@@ -46,9 +46,9 @@ export async function POST(req: NextRequest) {
 
     if (!gateAId) {
         const user = await User.findOne({ clerkId: userId });
-        if (!user) return NextResponse.json({ error: "User not found", status: 401 });
-        if (!user.token) return NextResponse.json({ error: "Token not found", status: 401 });
-        if (!safeCompare(token, user.token)) return NextResponse.json({ error: "Invalid Token", status: 401 });
+        if (!user) return NextResponse.json({ error: "User not found" }, { status: 401 });
+        if (!user.token) return NextResponse.json({ error: "Token not found" }, { status: 401 });
+        if (!safeCompare(token, user.token)) return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
         return createPanelAccessResponse(userId, 'Panel gate successfully opened.');
     } else {
         const gate = await Gate.findOne({ gatea_id: gateAId, isActive: true });
