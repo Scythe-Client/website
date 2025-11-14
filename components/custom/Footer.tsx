@@ -36,10 +36,10 @@ export default function Footer() {
 
                 <div className="flex flex-col gap-2">
                     <span className="text-gray-400 text-sm font-semibold">Legal</span>
-                    <Link href="">
+                    <Link href="/tos">
                         <button className="cursor-pointer text-gray-300 px-2 py-1 hover:text-[#7a4dba] transition-all rounded-md text-sm">Terms and Conditions</button>
                     </Link>
-                    <Link href="">
+                    <Link href="/privacy">
                         <button className="cursor-pointer text-gray-300 px-2 py-1 hover:text-[#7a4dba] transition-all rounded-md text-sm">Privacy Policy</button>
                     </Link>
                 </div>

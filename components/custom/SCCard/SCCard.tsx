@@ -5,9 +5,10 @@ interface SCCardProps {
     title: string;
     paragraph: string;
     featured?: boolean;
+    learnMore: string;
 }
 
-export default function SCCard({ title, paragraph, featured }: SCCardProps) {
+export default function SCCard({ title, paragraph, featured, learnMore }: SCCardProps) {
     return (
         <div className="card relative overflow-visible w-[256px] h-[354px]">
             <div className={`content w-full h-full ${styles['transform-style-preserve-3d']} transition-transform duration-300 ease-in-out hover:${styles['rotate-y-180']} rounded-lg shadow-[0_0_10px_1px_#000000ee]`}>
@@ -30,7 +31,7 @@ export default function SCCard({ title, paragraph, featured }: SCCardProps) {
                         <div className="pt-4 border-t border-white/10">
                             <Link href="/features">
                                 <button className="text-xs cursor-pointer font-medium text-purple-400 hover:text-purple-300 transition-colors focus:outline-none">
-                                    Learn More →
+                                    {learnMore} →
                                 </button>
                             </Link>
                         </div>

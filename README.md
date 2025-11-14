@@ -1,7 +1,5 @@
 # Scythe Client Website
 
-> ⚠️ **CLOSED SOURCE** - This repository is private to the Scythe Client Team. Do not share externally.
-
 Full-stack Next.js website and API backend for Scythe Client, a high-performance Minecraft client.
 
 **Stack:** Next.js 16 • React 19 • TypeScript • MongoDB • Clerk Auth • Tailwind CSS
@@ -195,6 +193,4 @@ Feature flags/access control:
 
 ## License
 
-**PROPRIETARY - ALL RIGHTS RESERVED**
-
-This software is confidential and may not be copied, modified, or distributed without explicit written permission from the Scythe Client Team.
+This repository is licensed under BUSL 1.1 (Business Source License 1.1). Refer to the License.

@@ -7,21 +7,42 @@ import {
 import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
+import { useEffect, useState } from 'react';
 
 export default function Community() {
+    const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setVisibleSections((prev) => new Set(prev).add(entry.target.id));
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        const elements = document.querySelectorAll('[data-animate]');
+        elements.forEach((el) => observer.observe(el));
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div className="min-h-screen bg-black text-white">
             <Header />
             <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-top bg-fixed bg-no-repeat bg-cover" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
-            <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/30 via-black to-black"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-neutral-800/30 via-black to-black"></div>
                 <div className="relative max-w-7xl mx-auto">
-                    <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 text-gradient-animated">
+                    <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
                         Our Community
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl">
+                    <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl opacity-0 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
                         Join our community with hundreds of active players across various social media platforms!
                     </p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl opacity-0 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
                         <div className="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 rounded-lg p-4 text-center">
                             <Users className="w-8 h-8 mx-auto mb-2 text-red-500" />
                             <div className="text-2xl font-bold">1K+</div>
@@ -43,7 +64,12 @@ export default function Community() {
                             <div className="text-sm text-gray-400">Rating</div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div
+                        id="social-cards"
+                        data-animate
+                        className={`grid grid-cols-1 sm:grid-cols-3 gap-5 ${visibleSections.has('social-cards') ? 'visible' : ''}`}
+                        style={{animationDelay: '0.1s'}}
+                    >
                         <Link href="https://discord.scytheclient.com" target="_blank">
                             <div className="group bg-[#5865F2]/10 border border-[#5865F2]/30 hover:border-[#5865F2] p-6 rounded-xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#5865F2]/50 hover:-translate-y-2">
                                 <FaDiscord className="w-12 h-12 text-[#5865F2] group-hover:scale-110 transition-transform duration-300" />
@@ -79,8 +105,20 @@ export default function Community() {
                         </Link>
                     </div>
                     <div className="pt-20 max-w-5xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center">Why Join Us?</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <h2
+                            id="why-join-title"
+                            data-animate
+                            className={`text-3xl md:text-4xl font-bold mb-10 text-center ${visibleSections.has('why-join-title') ? 'visible' : ''}`}
+                            style={{animationDelay: '0.1s'}}
+                        >
+                            Why Join Us?
+                        </h2>
+                        <div
+                            id="why-join-cards"
+                            data-animate
+                            className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${visibleSections.has('why-join-cards') ? 'visible' : ''}`}
+                            style={{animationDelay: '0.3s'}}
+                        >
                             <div className="bg-neutral-900/30 backdrop-blur-sm border border-neutral-800 p-6 rounded-xl hover:border-purple-500/50 transition-all">
                                 <Sword className="w-10 h-10 text-purple-500 mb-4" />
                                 <h3 className="text-xl font-bold mb-2">Exclusive Events</h3>
