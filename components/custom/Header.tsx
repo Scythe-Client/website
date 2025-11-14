@@ -1,4 +1,5 @@
 import {SignInButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Header() {
     const { isSignedIn } = useUser();
@@ -6,7 +7,9 @@ export default function Header() {
         <nav className="fixed w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <span className="text-2xl font-semibold">Scythe Client</span>
+                    <Link href="/">
+                        <span className="text-2xl font-semibold">Scythe Client</span>
+                    </Link>
                 </div>
                 <div className="hidden md:flex items-center gap-8">
                     <a href="/features" className="hover:text-[#7a4dba] transition-colors">Features</a>
