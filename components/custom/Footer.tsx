@@ -14,19 +14,19 @@ export default function Footer() {
 
                 <div className="flex flex-col gap-2">
                     <span className="text-gray-300 text-sm font-semibold">Socials</span>
-                    <Link href="https://discord.scytheclient.com">
+                    <Link href="https://discord.scytheclient.com" target="_blank" rel="noopener noreferrer">
                         <button className="cursor-pointer text-gray-300 flex items-center gap-2 px-2 py-1 hover:text-[#7a4dba] transition-all rounded-md text-sm">
                             <FaDiscord className="w-5 h-5" />
                             Discord
                         </button>
                     </Link>
-                    <Link href="">
+                    <Link href="https://x.com/ScytheClient" target="_blank" rel="noopener noreferrer">
                         <button className="cursor-pointer text-gray-300 flex items-center gap-2 px-2 py-1 hover:text-[#7a4dba] transition-all rounded-md text-sm">
                             <FaTwitter className="w-5 h-5" />
-                            Twitter
+                            X
                         </button>
                     </Link>
-                    <Link href="">
+                    <Link href="https://www.instagram.com/scytheclient" target="_blank" rel="noopener noreferrer">
                         <button className="cursor-pointer text-gray-300 flex items-center gap-2 px-2 py-1 hover:text-[#7a4dba] transition-all rounded-md text-sm">
                             <FaInstagram className="w-5 h-5" />
                             Instagram

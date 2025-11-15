@@ -70,7 +70,7 @@ export default function Community() {
                         className={`grid grid-cols-1 sm:grid-cols-3 gap-5 ${visibleSections.has('social-cards') ? 'visible' : ''}`}
                         style={{animationDelay: '0.1s'}}
                     >
-                        <Link href="https://discord.scytheclient.com" target="_blank">
+                        <Link href="https://discord.scytheclient.com" target="_blank" rel="noopener noreferrer">
                             <div className="group bg-[#5865F2]/10 border border-[#5865F2]/30 hover:border-[#5865F2] p-6 rounded-xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#5865F2]/50 hover:-translate-y-2">
                                 <FaDiscord className="w-12 h-12 text-[#5865F2] group-hover:scale-110 transition-transform duration-300" />
                                 <h3 className="text-2xl font-semibold mt-4 mb-2">Discord</h3>
@@ -81,7 +81,7 @@ export default function Community() {
                                 </div>
                             </div>
                         </Link>
-                        <Link href="https://x.com" target="_blank">
+                        <Link href="https://x.com/ScytheClient" target="_blank" rel="noopener noreferrer">
                             <div className="group bg-neutral-900/40 border border-neutral-700 hover:border-white p-6 rounded-xl transition-all duration-300 cursor-pointer shadow-lg hover:shadow-neutral-600 hover:-translate-y-2">
                                 <FaTwitter className="w-12 h-12 text-white group-hover:scale-110 transition-transform duration-300" />
                                 <h3 className="text-2xl font-semibold mt-4 mb-2">X</h3>
@@ -92,7 +92,7 @@ export default function Community() {
                                 </div>
                             </div>
                         </Link>
-                        <Link href="https://instagram.com" target="_blank">
+                        <Link href="https://www.instagram.com/scytheclient" target="_blank" rel="noopener noreferrer">
                             <div className="group bg-pink-900/20 p-6 rounded-xl border border-pink-800 hover:border-pink-700 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-pink-500/50 hover:-translate-y-2">
                                 <FaInstagram className="w-12 h-12 text-white group-hover:scale-110 transition-transform duration-300" />
                                 <h3 className="text-2xl font-semibold mt-4 mb-2">Instagram</h3>
