@@ -1,9 +1,6 @@
 'use client';
 
-import {Sword, Zap, Shield, Box, Settings, Lock, Sparkles, Search} from 'lucide-react';
-import {
-    FaDiscord,
-} from "react-icons/fa";
+import {Box, Settings, Lock, Sparkles, Users} from 'lucide-react';
 import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
@@ -41,7 +38,7 @@ export default function Home() {
             <section className="relative pt-40 pb-28 px-6 overflow-hidden bg-top bg-fixed bg-no-repeat bg-cover" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/90 to-black"></div>
                 <div className="pt-16 relative max-w-7xl mx-auto">
-                    <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
+                    <h1 className="font-[Horizon] text-[40px] md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
                         Scythe Client
                     </h1>
                     <h2 className="text-2xl md:text-4xl font-semibold text-gray-300 mb-6 opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.2s" }}>
@@ -119,43 +116,44 @@ export default function Home() {
                             learnMore="Get Support"
                         />
                     </div>
+                    <div className={`animate-fade-in-up ${visibleSections.has('grid-cards') ? 'visible' : ''}`} style={{animationDelay: '0.3s'}}>
+                        <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+                            <GridItem
+                                area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
+                                icon={<Box className="h-4 w-4 text-white" />}
+                                title="Built for Performance"
+                                description="Optimized rendering engine that pushes your FPS to the limit without compromising quality."
+                            />
 
-                    <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
-                        <GridItem
-                            area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
-                            icon={<Box className="h-4 w-4 text-white" />}
-                            title="Built for Performance"
-                            description="Optimized rendering engine that pushes your FPS to the limit without compromising quality."
-                        />
+                            <GridItem
+                                area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
+                                icon={<Settings className="h-4 w-4 text-white" />}
+                                title="Fully Customizable"
+                                description="Tweak every setting to match your playstyle. From keybinds to visual mods, you're in control."
+                            />
 
-                        <GridItem
-                            area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
-                            icon={<Settings className="h-4 w-4 text-white" />}
-                            title="Fully Customizable"
-                            description="Tweak every setting to match your playstyle. From keybinds to visual mods, you're in control."
-                        />
+                            <GridItem
+                                area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
+                                icon={<Lock className="h-4 w-4 text-white" />}
+                                title="Safe & Secure"
+                                description="Regular updates and anti-cheat compliance keep you protected while you play."
+                            />
 
-                        <GridItem
-                            area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
-                            icon={<Lock className="h-4 w-4 text-white" />}
-                            title="Safe & Secure"
-                            description="Regular updates and anti-cheat compliance keep you protected while you play."
-                        />
+                            <GridItem
+                                area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
+                                icon={<Sparkles className="h-4 w-4 text-white" />}
+                                title="Modern Interface"
+                                description="Clean, intuitive menus designed for speed. No bloat, just what you need."
+                            />
 
-                        <GridItem
-                            area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
-                            icon={<Sparkles className="h-4 w-4 text-white" />}
-                            title="Modern Interface"
-                            description="Clean, intuitive menus designed for speed. No bloat, just what you need."
-                        />
-
-                        <GridItem
-                            area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
-                            icon={<Search className="h-4 w-4 text-white" />}
-                            title="Active Community"
-                            description="Join thousands of players sharing configs, tips, and custom mods in our Discord."
-                        />
-                    </ul>
+                            <GridItem
+                                area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
+                                icon={<Users className="h-4 w-4 text-white" />}
+                                title="Active Community"
+                                description="Join thousands of players sharing configs, tips, and custom mods in our Discord."
+                            />
+                        </ul>
+                    </div>
                 </div>
             </section>
 
