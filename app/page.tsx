@@ -64,7 +64,7 @@ export default function Home() {
                             </button>
                         </Link>
                     </div>
-                    <div className="mt-12 flex items-center gap-8 text-sm text-gray-500 opacity-0 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+                    <div className="mt-12 flex items-center gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             <span>100+ Active Users</span>
@@ -90,8 +90,8 @@ export default function Home() {
                         className={`text-center mb-16 ${visibleSections.has('features-title') ? 'visible' : ''}`}
                         style={{animationDelay: '0.1s'}}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent md:text-5xl font-semibold mb-4">Unmatched Performance</h2>
-                        <p className="text-gray-400 text-lg">Features designed for competitive excellence</p>
+                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Unmatched Performance</h2>
+                        <p className="text-gray-300 text-lg">Features designed for competitive excellence</p>
                     </div>
                     <div
                         id="features-cards"
@@ -132,7 +132,7 @@ export default function Home() {
                                 <h3 className="font-[Minecraft] text-2xl font-semibold text-white text-center md:text-left mb-3">
                                     Lightning Fast
                                 </h3>
-                                <p className="text-gray-400 text-center md:text-left">
+                                <p className="text-gray-300 text-center md:text-left">
                                     Optimized for maximum FPS with minimal resource usage.
                                 </p>
                             </div>
@@ -149,7 +149,7 @@ export default function Home() {
                                 <h3 className="font-[Minecraft] text-2xl text-white font-semibold text-center md:text-right mb-3">
                                     Secure and Safe
                                 </h3>
-                                <p className="text-gray-400 text-center md:text-right">
+                                <p className="text-gray-300 text-center md:text-right">
                                     Built with security in mind. Regular updates ensure your safety.
                                 </p>
                             </div>
@@ -165,7 +165,7 @@ export default function Home() {
                                 <h3 className="font-[Minecraft] text-2xl text-white font-semibold text-center md:text-left mb-3">
                                     Competitive Edge
                                 </h3>
-                                <p className="text-gray-400 text-center md:text-left">
+                                <p className="text-gray-300 text-center md:text-left">
                                     Custom HUD, auto-sprint, and PvP-focused enhancements.
                                 </p>
                             </div>
@@ -182,8 +182,8 @@ export default function Home() {
                         className={visibleSections.has('download-title') ? 'visible' : ''}
                         style={{animationDelay: '0.1s'}}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent md:text-5xl font-semibold mb-6">Ready to dominate?</h2>
-                        <p className="text-gray-400 text-lg mb-12">
+                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-6">Ready to dominate?</h2>
+                        <p className="text-gray-300 text-lg mb-12">
                             Join our team to test Scythe Client before its release!
                         </p>
                     </div>
@@ -219,8 +219,8 @@ export default function Home() {
                         className={`text-center mb-16 ${visibleSections.has('community-title') ? 'visible' : ''}`}
                         style={{animationDelay: '0.1s'}}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-4xl md:text-5xl font-bold mb-4">Join Our Community</h2>
-                        <p className="text-gray-400 text-lg">Connect with players worldwide</p>
+                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Join Our Community</h2>
+                        <p className="text-gray-300 text-lg">Connect with players worldwide</p>
                     </div>
 
                     <div
@@ -229,17 +229,26 @@ export default function Home() {
                         className={`grid md:grid-cols-3 gap-8 mb-12 ${visibleSections.has('community-stats') ? 'visible' : ''}`}
                         style={{animationDelay: '0.3s'}}
                     >
-                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">100+</div>
-                            <div className="text-gray-400">Active Users</div>
+                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center transition-all hover:border-purple-400/40 group relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative z-10">
+                                <div className="text-4xl font-bold text-[#8a5dca] mb-2">100+</div>
+                                <div className="text-gray-300">Active Users</div>
+                            </div>
                         </div>
-                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">100+</div>
-                            <div className="text-gray-400">Downloads</div>
+                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center transition-all hover:border-purple-400/40 group relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative z-10">
+                                <div className="text-4xl font-bold text-[#8a5dca] mb-2">1k+</div>
+                                <div className="text-gray-300">Members</div>
+                            </div>
                         </div>
-                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center">
-                            <div className="text-4xl font-bold text-[#7a4dba] mb-2">24/7</div>
-                            <div className="text-gray-400">Support</div>
+                        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center transition-all hover:border-purple-400/40 group relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="relative z-10">
+                                <div className="text-4xl font-bold text-[#8a5dca] mb-2">24/7</div>
+                                <div className="text-gray-300">Support</div>
+                            </div>
                         </div>
                         <div className="md:col-span-3 flex justify-center">
                             <Link href="/community">
