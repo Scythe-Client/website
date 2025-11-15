@@ -1,6 +1,6 @@
 'use client';
 
-import {Sword, Zap, Shield} from 'lucide-react';
+import {Sword, Zap, Shield, Box, Settings, Lock, Sparkles, Search} from 'lucide-react';
 import {
     FaDiscord,
 } from "react-icons/fa";
@@ -12,6 +12,7 @@ import {FaDownload} from "react-icons/fa6";
 import { useEffect, useState } from 'react';
 import {MdGroups} from "react-icons/md";
 import {FiExternalLink} from "react-icons/fi";
+import {GridItem} from "@/components/custom/GridItem";
 
 export default function Home() {
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -64,14 +65,14 @@ export default function Home() {
                             </button>
                         </Link>
                     </div>
-                    <div className="mt-12 flex items-center gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+                    <div className="mt-12 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             <span>100+ Active Users</span>
                         </div>
-                        <div>•</div>
+                        <div className="hidden md:block">•</div>
                         <div>Windows</div>
-                        <div>•</div>
+                        <div className="hidden md:block">•</div>
                         <div>Free Forever</div>
                     </div>
                 </div>
@@ -119,58 +120,42 @@ export default function Home() {
                         />
                     </div>
 
-                    <div className="relative max-w-5xl mx-auto py-20 px-6">
-                        <div className="absolute left-1/2 top-10 bottom-10 w-1 -translate-x-1/2 bg-gradient-to-b from-transparent via-purple-500/60 to-transparent pointer-events-none shadow-[0_0_35px_8px_rgba(168,85,247,0.25)]" />
-                        <div
-                            id="timeline-1"
-                            data-animate
-                            className={`flex flex-col md:flex-row items-center mb-28 relative group ${visibleSections.has('timeline-1') ? 'visible' : ''}`}
-                        >
-                            <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-purple-500 rounded-full shadow-[0_0_20px_6px_rgba(168,85,247,0.8)] group-hover:scale-125 transition-transform z-10" />
-                            <div className="md:w-5/12 w-full md:mr-auto rounded-xl border border-purple-400/20 bg-[#0d0717] p-8 shadow-[0_0_25px_rgba(168,85,247,0.1)] transition-transform duration-300 group-hover:-translate-y-2">
-                                <Zap className="w-8 h-8 text-yellow-400 mb-4 mx-auto md:mx-0" />
-                                <h3 className="font-[Minecraft] text-2xl font-semibold text-white text-center md:text-left mb-3">
-                                    Lightning Fast
-                                </h3>
-                                <p className="text-gray-300 text-center md:text-left">
-                                    Optimized for maximum FPS with minimal resource usage.
-                                </p>
-                            </div>
-                        </div>
-                        <div
-                            id="timeline-2"
-                            data-animate
-                            className={`flex flex-col md:flex-row items-center mb-28 relative group ${visibleSections.has('timeline-2') ? 'visible' : ''}`}
-                        >
-                            <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-purple-500 rounded-full shadow-[0_0_20px_6px_rgba(168,85,247,0.8)] group-hover:scale-125 transition-transform z-10" />
+                    <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+                        <GridItem
+                            area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
+                            icon={<Box className="h-4 w-4 text-white" />}
+                            title="Built for Performance"
+                            description="Optimized rendering engine that pushes your FPS to the limit without compromising quality."
+                        />
 
-                            <div className="md:w-5/12 w-full md:ml-auto rounded-xl border border-purple-400/20 bg-[#0d0717] p-8 shadow-[0_0_25px_rgba(168,85,247,0.1)] transition-transform duration-300 group-hover:-translate-y-2">
-                                <Shield className="w-8 h-8 text-green-400 mb-4 mx-auto md:ml-auto md:mr-0" />
-                                <h3 className="font-[Minecraft] text-2xl text-white font-semibold text-center md:text-right mb-3">
-                                    Secure and Safe
-                                </h3>
-                                <p className="text-gray-300 text-center md:text-right">
-                                    Built with security in mind. Regular updates ensure your safety.
-                                </p>
-                            </div>
-                        </div>
-                        <div
-                            id="timeline-3"
-                            data-animate
-                            className={`flex flex-col md:flex-row items-center relative group ${visibleSections.has('timeline-3') ? 'visible' : ''}`}
-                        >
-                            <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-purple-500 rounded-full shadow-[0_0_20px_6px_rgba(168,85,247,0.8)] group-hover:scale-125 transition-transform z-10" />
-                            <div className="md:w-5/12 w-full md:mr-auto rounded-xl border border-purple-400/20 bg-[#0d0717] p-8 shadow-[0_0_25px_rgba(168,85,247,0.1)] transition-transform duration-300 group-hover:-translate-y-2">
-                                <Sword className="w-8 h-8 text-pink-400 mb-4 mx-auto md:mx-0" />
-                                <h3 className="font-[Minecraft] text-2xl text-white font-semibold text-center md:text-left mb-3">
-                                    Competitive Edge
-                                </h3>
-                                <p className="text-gray-300 text-center md:text-left">
-                                    Custom HUD, auto-sprint, and PvP-focused enhancements.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        <GridItem
+                            area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]"
+                            icon={<Settings className="h-4 w-4 text-white" />}
+                            title="Fully Customizable"
+                            description="Tweak every setting to match your playstyle. From keybinds to visual mods, you're in control."
+                        />
+
+                        <GridItem
+                            area="md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]"
+                            icon={<Lock className="h-4 w-4 text-white" />}
+                            title="Safe & Secure"
+                            description="Regular updates and anti-cheat compliance keep you protected while you play."
+                        />
+
+                        <GridItem
+                            area="md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]"
+                            icon={<Sparkles className="h-4 w-4 text-white" />}
+                            title="Modern Interface"
+                            description="Clean, intuitive menus designed for speed. No bloat, just what you need."
+                        />
+
+                        <GridItem
+                            area="md:[grid-area:3/1/4/13] xl:[grid-area:2/8/3/13]"
+                            icon={<Search className="h-4 w-4 text-white" />}
+                            title="Active Community"
+                            description="Join thousands of players sharing configs, tips, and custom mods in our Discord."
+                        />
+                    </ul>
                 </div>
             </section>
 
