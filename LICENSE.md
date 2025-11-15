@@ -1,10 +1,10 @@
 # Business Source License 1.1
 
 ## Parameters
-Licensor: Scythe Client
-Licensed Work: Scythe Client Website
-Change Date: 2033-07-14
-Change License: Apache License 2.0
+Licensor: Scythe Client  
+Licensed Work: Scythe Client Website  
+Change Date: 2033-07-14  
+Change License: Apache License 2.0  
 
 ## Terms
 
