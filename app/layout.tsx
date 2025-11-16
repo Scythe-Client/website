@@ -66,16 +66,17 @@ export const metadata: Metadata = {
             'max-snippet': -1,
         },
     },
-    verification: {
-
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/images/apple-touch-icon.png',
     },
 };
 
 await connectDB();
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+    children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
@@ -94,13 +95,9 @@ export default function RootLayout({
         >
             <SpeedInsights />
             <html lang="en" className={poppins.variable}>
-            <head>
-                <link rel="icon" href="/favicon.ico" sizes="any" />
-                <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-                <meta name="theme-color" content="#7a4dba" />
-                <title></title>
-            </head>
-            <body className="antialiased">{children}</body>
+                <body className="antialiased">
+                    {children}
+                </body>
             </html>
         </ClerkProvider>
     );
