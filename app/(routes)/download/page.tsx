@@ -31,11 +31,11 @@ export default function DownloadPage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            <Header />
+            <Header currentPage="/download" />
             <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-top bg-fixed bg-no-repeat bg-cover" style={{ backgroundImage: "url('/images/bg.jpg')" }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/75 to-black"></div>
                 <div className="pt-16 relative max-w-7xl mx-auto">
-                    <h1 className="font-[Horizon] text-[40px] md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
+                    <h1 className="font-[Horizon] text-5xl md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
                         Download
                     </h1>
                     <p className="text-xl md:text-xl text-gray-300 mb-8 max-w-2xl animate-fade-in-up">

@@ -1,9 +1,13 @@
-import {SignInButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
+import {SignInButton, SignOutButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-export default function Header() {
+interface HeaderProps {
+    currentPage: string;
+}
+
+export default function Header({ currentPage }: HeaderProps) {
     const { isSignedIn } = useUser();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -15,6 +19,13 @@ export default function Header() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const navLinks = [
+        { name: 'Home', href: '/' },
+        { name: 'Features', href: '/features' },
+        { name: 'Download', href: '/download' },
+        { name: 'Community', href: '/community' },
+    ];
 
     return (
         <nav className={`fixed w-full border-b z-50 transition-all duration-300 ${
@@ -49,10 +60,20 @@ export default function Header() {
                 </button>
 
                 <div className="hidden md:flex items-center gap-6">
-                    <Link href="/" className="hover:text-purple-400 transition-colors font-medium">Home</Link>
-                    <Link href="/features" className="hover:text-purple-400 transition-colors font-medium">Features</Link>
-                    <Link href="/download" className="hover:text-purple-400 transition-colors font-medium">Download</Link>
-                    <Link href="/community" className="hover:text-purple-400 transition-colors font-medium">Community</Link>
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className={`hover:text-purple-400 transition-colors font-medium relative pb-1 ${
+                                currentPage === link.href ? 'text-purple-400' : ''
+                            }`}
+                        >
+                            {link.name}
+                            {currentPage === link.href && (
+                                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-400 rounded-full"></span>
+                            )}
+                        </Link>
+                    ))}
                     {!isSignedIn ? (
                         <>
                             <SignInButton mode="modal">
@@ -73,10 +94,17 @@ export default function Header() {
 
             <div className={`md:hidden overflow-hidden transition-all duration-300 ${isMenuOpen ? 'max-h-96' : 'max-h-0'}`}>
                 <div className="px-6 py-4 flex flex-col gap-4 bg-black/90 backdrop-blur-md border-t border-gray-700/50">
-                    <Link href="/" className="hover:text-purple-400 transition-colors font-medium py-2">Home</Link>
-                    <Link href="/features" className="hover:text-purple-400 transition-colors font-medium py-2">Features</Link>
-                    <Link href="/download" className="hover:text-purple-400 transition-colors font-medium py-2">Download</Link>
-                    <Link href="/community" className="hover:text-purple-400 transition-colors font-medium py-2">Community</Link>
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className={`hover:text-purple-400 transition-colors font-medium py-1 relative ${
+                                currentPage === link.href ? 'text-purple-400' : ''
+                            }`}
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
                     {!isSignedIn ? (
                         <div className="flex flex-col gap-3 pt-2 border-t border-gray-800 mt-2">
                             <SignInButton mode="modal">
@@ -90,8 +118,11 @@ export default function Header() {
                             </SignUpButton>
                         </div>
                     ) : (
-                        <div className="pt-2 border-t border-gray-800 mt-2">
-                            <UserButton afterSignOutUrl="/" />
+                        <div className="pt-2 border-t border-gray-800 mt-2 flex items-center gap-4">
+                            <UserButton afterSignOutUrl="/"/>
+                            <SignOutButton>
+                                <button className="hover:text-purple-400 transition-colors cursor-pointer text-left font-medium py-2">Sign Out</button>
+                            </SignOutButton>
                         </div>
                     )}
                 </div>
