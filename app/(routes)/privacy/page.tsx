@@ -7,7 +7,7 @@ import Header from "@/components/custom/Header";
 export default function PrivacyPolicy() {
     return (
         <div className="min-h-screen bg-black text-white">
-            <Header />
+            <Header currentPage="/privacy"/>
 
             <section className="relative pt-32 pb-16 px-6">
                 <div className="max-w-4xl mx-auto">
