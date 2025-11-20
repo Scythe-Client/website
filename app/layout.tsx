@@ -6,12 +6,19 @@ import { dark } from '@clerk/themes';
 import { connectDB } from "@/lib/db";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import React from "react";
+import localFont from "next/font/local";
 
 const poppins = Poppins({
     variable: "--font-poppins",
     subsets: ["latin"],
     weight: ["400", "500", "600", "700"],
     display: "swap",
+});
+
+const cal = localFont({
+    src: "../public/fonts/CalSans.ttf",
+    variable: "--font-calsans",
+    weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -99,7 +106,7 @@ export default async function RootLayout({
         >
             <SpeedInsights />
             <html lang="en" className={poppins.variable}>
-                <body className="antialiased">
+                <body className={`antialiased ${cal.variable}`}>
                     {children}
                 </body>
             </html>

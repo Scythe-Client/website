@@ -134,6 +134,13 @@ html {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'CalSans';
+    src: url('../public/fonts/CalSans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
