@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/themes';
-import {connectDB} from "@/lib/db";
+import { connectDB } from "@/lib/db";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import React from "react";
 
@@ -72,13 +72,17 @@ export const metadata: Metadata = {
     },
 };
 
-await connectDB();
+export const viewport: Viewport = {
+    themeColor: '#7a4dba',
+};
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    await connectDB();
+    
     return (
         <ClerkProvider
             appearance={{

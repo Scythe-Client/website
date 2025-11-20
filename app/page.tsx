@@ -1,15 +1,15 @@
 'use client';
 
-import {Box, Settings, Lock, Sparkles, Users} from 'lucide-react';
+import { Box, Settings, Lock, Sparkles, Users } from 'lucide-react';
 import Link from "next/link";
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
 import SCCard from "@/components/custom/SCCard/SCCard";
-import {FaDownload} from "react-icons/fa6";
+import { FaDownload } from "react-icons/fa6";
 import { useEffect, useState } from 'react';
-import {MdGroups} from "react-icons/md";
-import {FiExternalLink} from "react-icons/fi";
-import {GridItem} from "@/components/custom/GridItem";
+import { MdGroups } from "react-icons/md";
+import { FiExternalLink } from "react-icons/fi";
+import { GridItem } from "@/components/custom/GridItem";
 
 export default function Home() {
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -44,11 +44,11 @@ export default function Home() {
                     <h2 className="text-2xl md:text-4xl font-semibold text-gray-300 mb-6 opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.2s" }}>
                         The <span className="text-gradient-animated">Absolute Cinema</span> of Minecraft Clients
                     </h2>
-                    <p className="text-xl md:text-xl text-gray-300 mb-8 max-w-2xl opacity-0 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                    <p className="text-xl md:text-xl text-gray-300 mb-8 max-w-2xl opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
                         Stripped of bloat. Tuned for reaction. Built for victory.
                         The client that keeps up when every click, swing, and step counts.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-start items-center opacity-0 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-start items-center opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
                         <Link href="/download">
                             <button className="group h-[45px] cursor-pointer bg-gradient-to-r from-purple-950/80 via-purple-700/50 to-purple-950/70 shadow-purple-950 shadow-md hover:shadow-lg px-6 rounded-md font-medium text-lg text-white transition-all flex items-center gap-2">
                                 <FaDownload className="w-4 h-4" />
@@ -62,7 +62,7 @@ export default function Home() {
                             </button>
                         </Link>
                     </div>
-                    <div className="mt-12 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{animationDelay: '0.7s'}}>
+                    <div className="mt-12 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             <span>100+ Active Users</span>
@@ -86,7 +86,7 @@ export default function Home() {
                         id="features-title"
                         data-animate
                         className={`text-center mb-16 ${visibleSections.has('features-title') ? 'visible' : ''}`}
-                        style={{animationDelay: '0.1s'}}
+                        style={{ animationDelay: '0.1s' }}
                     >
                         <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Unmatched Performance</h2>
                         <p className="text-gray-300 text-lg">Features designed for competitive excellence</p>
@@ -95,7 +95,7 @@ export default function Home() {
                         id="features-cards"
                         data-animate
                         className={`flex justify-center items-center gap-8 p-4 mb-20 flex-wrap ${visibleSections.has('features-cards') ? 'visible' : ''}`}
-                        style={{animationDelay: '0.3s'}}
+                        style={{ animationDelay: '0.3s' }}
                     >
                         <SCCard
                             title="Performance"
@@ -116,7 +116,12 @@ export default function Home() {
                             learnMore="Get Support"
                         />
                     </div>
-                    <div className={`animate-fade-in-up ${visibleSections.has('grid-cards') ? 'visible' : ''}`} style={{animationDelay: '0.3s'}}>
+                    <div
+                        id="grid-cards"
+                        data-animate
+                        className={`animate-fade-in-up ${visibleSections.has('grid-cards') ? 'visible' : ''}`}
+                        style={{ animationDelay: '0.3s' }}
+                    >
                         <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
                             <GridItem
                                 area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
@@ -163,7 +168,7 @@ export default function Home() {
                         id="download-title"
                         data-animate
                         className={visibleSections.has('download-title') ? 'visible' : ''}
-                        style={{animationDelay: '0.1s'}}
+                        style={{ animationDelay: '0.1s' }}
                     >
                         <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-6">Ready to dominate?</h2>
                         <p className="text-gray-300 text-lg mb-12">
@@ -174,7 +179,7 @@ export default function Home() {
                         id="download-card"
                         data-animate
                         className={`bg-black border border-gray-800 rounded-2xl p-12 ${visibleSections.has('download-card') ? 'visible' : ''}`}
-                        style={{animationDelay: '0.3s'}}
+                        style={{ animationDelay: '0.3s' }}
                     >
                         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                             <div className="text-left">
@@ -200,7 +205,7 @@ export default function Home() {
                         id="community-title"
                         data-animate
                         className={`text-center mb-16 ${visibleSections.has('community-title') ? 'visible' : ''}`}
-                        style={{animationDelay: '0.1s'}}
+                        style={{ animationDelay: '0.1s' }}
                     >
                         <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Join Our Community</h2>
                         <p className="text-gray-300 text-lg">Connect with players worldwide</p>
@@ -210,7 +215,7 @@ export default function Home() {
                         id="community-stats"
                         data-animate
                         className={`grid md:grid-cols-3 gap-8 mb-12 ${visibleSections.has('community-stats') ? 'visible' : ''}`}
-                        style={{animationDelay: '0.3s'}}
+                        style={{ animationDelay: '0.3s' }}
                     >
                         <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8 rounded-xl text-center transition-all hover:border-purple-400/40 group relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -238,7 +243,7 @@ export default function Home() {
                                 <button className="group h-[45px] cursor-pointer bg-gradient-to-r from-purple-950/80 via-purple-700/50 to-purple-950/70 shadow-purple-950 shadow-md hover:shadow-lg px-6 rounded-md font-medium text-lg text-white transition-all flex items-center gap-2">
                                     <MdGroups className="w-4 h-4" />
                                     Join our Community
-                                    <span className="inline-block transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"><FiExternalLink/></span>
+                                    <span className="inline-block transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"><FiExternalLink /></span>
                                 </button>
                             </Link>
                         </div>

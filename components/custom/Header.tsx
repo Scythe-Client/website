@@ -1,4 +1,4 @@
-import {SignInButton, SignOutButton, SignUpButton, UserButton, useUser} from "@clerk/nextjs";
+import { SignInButton, SignOutButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -28,11 +28,10 @@ export default function Header({ currentPage }: HeaderProps) {
     ];
 
     return (
-        <nav className={`fixed w-full border-b z-50 transition-all duration-300 ${
-            scrolled
+        <nav className={`fixed w-full border-b z-50 transition-all duration-300 ${scrolled
                 ? 'bg-black/80 backdrop-blur-md border-gray-700/50 shadow-lg'
                 : 'bg-black/40 backdrop-blur-sm border-gray-800/30'
-        }`}>
+            }`}>
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Link href="/" className="flex items-center gap-3 group">
@@ -64,9 +63,8 @@ export default function Header({ currentPage }: HeaderProps) {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`hover:text-purple-400 transition-colors font-medium relative pb-1 ${
-                                currentPage === link.href ? 'text-purple-400' : ''
-                            }`}
+                            className={`hover:text-purple-400 transition-colors font-medium relative pb-1 ${currentPage === link.href ? 'text-purple-400' : ''
+                                }`}
                         >
                             {link.name}
                             {currentPage === link.href && (
@@ -80,9 +78,8 @@ export default function Header({ currentPage }: HeaderProps) {
                                 <button className="hover:text-purple-400 transition-colors cursor-pointer font-medium">Sign In</button>
                             </SignInButton>
                             <SignUpButton mode="modal">
-                                <button className="relative group cursor-pointer bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 px-5 py-2.5 rounded-lg font-semibold text-sm text-white transition-all overflow-hidden">
+                                <button className="group h-[40px] cursor-pointer bg-gradient-to-r from-purple-950/80 via-purple-700/50 to-purple-950/70 shadow-purple-950 shadow-md hover:shadow-lg px-5 rounded-md font-medium text-lg text-white transition-all flex items-center gap-2">
                                     <span className="relative z-10">Get Started</span>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </button>
                             </SignUpButton>
                         </>
@@ -98,9 +95,9 @@ export default function Header({ currentPage }: HeaderProps) {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`hover:text-purple-400 transition-colors font-medium py-1 relative ${
-                                currentPage === link.href ? 'text-purple-400' : ''
-                            }`}
+                            onClick={() => setIsMenuOpen(false)}
+                            className={`hover:text-purple-400 transition-colors font-medium py-1 relative ${currentPage === link.href ? 'text-purple-400' : ''
+                                }`}
                         >
                             {link.name}
                         </Link>
@@ -119,7 +116,7 @@ export default function Header({ currentPage }: HeaderProps) {
                         </div>
                     ) : (
                         <div className="pt-2 border-t border-gray-800 mt-2 flex items-center gap-4">
-                            <UserButton afterSignOutUrl="/"/>
+                            <UserButton afterSignOutUrl="/" />
                             <SignOutButton>
                                 <button className="hover:text-purple-400 transition-colors cursor-pointer text-left font-medium py-2">Sign Out</button>
                             </SignOutButton>
