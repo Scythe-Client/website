@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         template: "%s | Scythe Client"
     },
     description: "Scythe Client is a high-performance Minecraft client with Sodium, optimized for PvP. Get 200%+ FPS boost, custom crosshairs, and essential combat features. Free download for Windows.",
-    keywords: ["Minecraft client", "PvP client", "Sodium client", "Minecraft FPS boost", "best Minecraft client", "Minecraft performance", "custom crosshair", "Minecraft mods"],
+    keywords: ["Minecraft client", "PvP client", "Sodium client", "Minecraft FPS boost", "best Minecraft client", "Minecraft performance", "custom crosshair", "Minecraft mods", "Minecraft Free", "Minecraft Download", "mine craft", "minecraft free", "minecraft play"],
     authors: [{ name: "Scythe Client Team" }],
     creator: "Scythe Client",
     publisher: "Scythe Client",
@@ -84,12 +84,42 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({
-    children,
-}: Readonly<{
+                                             children,
+                                         }: Readonly<{
     children: React.ReactNode;
 }>) {
     await connectDB();
-    
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'Scythe Client',
+        applicationCategory: 'GameApplication',
+        operatingSystem: 'Windows',
+        offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock'
+        },
+        description: 'Scythe Client is a high-performance Minecraft client with Sodium, optimized for PvP. Get 200%+ FPS boost, custom crosshairs, and essential combat features.',
+        softwareVersion: '1.0',
+        fileFormat: 'application/x-msdownload',
+        featureList: [
+            'FPS Boost',
+            'Sodium Rendering',
+            'PvP Mods',
+            'Custom Crosshairs',
+            'Memory Optimization'
+        ],
+        author: {
+            '@type': 'Organization',
+            name: 'Scythe Client Team',
+            url: 'https://scytheclient.com'
+        },
+        image: 'https://scytheclient.com/images/og-image.png'
+    };
+
     return (
         <ClerkProvider
             appearance={{
@@ -106,9 +136,13 @@ export default async function RootLayout({
         >
             <SpeedInsights />
             <html lang="en" className={poppins.variable}>
-                <body className={`antialiased ${cal.variable}`}>
-                    {children}
-                </body>
+            <body className={`antialiased ${cal.variable}`}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            {children}
+            </body>
             </html>
         </ClerkProvider>
     );
