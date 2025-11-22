@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface HeaderProps {
     currentPage: string;
@@ -14,6 +14,7 @@ interface HeaderProps {
 export default function Header({ currentPage }: HeaderProps) {
     const { isSignedIn } = useUser();
     const [isOpen, setIsOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
 
     const navLinks = [
@@ -21,7 +22,19 @@ export default function Header({ currentPage }: HeaderProps) {
         { name: 'Features', href: '/features' },
         { name: 'Download', href: '/download' },
         { name: 'Community', href: '/community' },
+        { name: 'Blogs', href: '/blogs' },
     ];
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        handleScroll();
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -40,15 +53,16 @@ export default function Header({ currentPage }: HeaderProps) {
     }, [isOpen]);
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 pointer-events-none">
+        <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
             <motion.div
                 ref={headerRef}
                 layout
                 transition={{ type: "spring", stiffness: 200, damping: 30 }}
                 className={cn(
-                    "relative bg-black/55 backdrop-blur-xl shadow-2xl shadow-gray-950 overflow-hidden pointer-events-auto",
-                    "rounded-2xl",
-                    "w-[95vw] md:w-[900px]"
+                    "relative bg-black/60 backdrop-blur-xl shadow-2xl shadow-gray-950 overflow-hidden pointer-events-auto",
+                    isScrolled
+                        ? "w-[95vw] md:w-[900px] rounded-2xl border border-zinc-800 mt-6"
+                        : "w-full rounded-none border-b border-zinc-800 border-x-0 border-t-0 mt-0"
                 )}
             >
                 <div className="flex items-center justify-between px-6 py-4 relative z-20">

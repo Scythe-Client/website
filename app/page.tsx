@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { MdGroups } from "react-icons/md";
 import { FiExternalLink } from "react-icons/fi";
 import { GridItem } from "@/components/custom/GridItem";
+import { FaqsSection } from "@/components/custom/FaqsSection";
 
 export default function Home() {
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -250,6 +251,8 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            <FaqsSection />
 
             <Footer />
         </div>
