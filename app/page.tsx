@@ -10,7 +10,13 @@ import { useEffect, useState } from 'react';
 import { MdGroups } from "react-icons/md";
 import { FiExternalLink } from "react-icons/fi";
 import { GridItem } from "@/components/custom/GridItem";
-import { FaqsSection } from "@/components/custom/FaqsSection";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
+import dynamic from "next/dynamic";
+
+const FaqsSection = dynamic(
+    () => import("@/components/custom/FaqsSection").then((mod) => mod.FaqsSection),
+    { ssr: false }
+);
 
 export default function Home() {
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
@@ -58,9 +64,19 @@ export default function Home() {
                             </button>
                         </Link>
                         <Link href="https://forms.gle/rSKiydw8a9zRhP1AA" target="_blank" rel="noopener noreferrer">
-                            <button className="border-2 h-[45px] border-gray-700 cursor-pointer hover:border-[#7a6a8a] px-6 rounded-lg font-medium text-lg shadow-[#3a2a5a] shadow-md transition-all hover:transform-stroke hover:shadow-lg">
-                                Apply for Beta
-                            </button>
+                            <div className="relative rounded-2xl border border-gray-800 p-[2px]">
+                                <GlowingEffect
+                                    spread={40}
+                                    glow={true}
+                                    disabled={false}
+                                    proximity={64}
+                                    inactiveZone={0.01}
+                                    movementDuration={1.1}
+                                />
+                                <button className="relative h-[45px] cursor-pointer rounded-xl bg-black/60 px-6 font-medium text-lg text-white">
+                                    Apply for Beta
+                                </button>
+                            </div>
                         </Link>
                     </div>
                     <div className="mt-12 flex flex-col md:flex-row md:flex-wrap items-center gap-4 md:gap-8 text-sm text-gray-300 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
@@ -89,7 +105,9 @@ export default function Home() {
                         className={`text-center mb-16 ${visibleSections.has('features-title') ? 'visible' : ''}`}
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Unmatched Performance</h2>
+                        <h1 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">
+                            Unmatched Performance
+                        </h1>
                         <p className="text-gray-300 text-lg">Features designed for competitive excellence</p>
                     </div>
                     <div
@@ -171,7 +189,9 @@ export default function Home() {
                         className={visibleSections.has('download-title') ? 'visible' : ''}
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-6">Ready to dominate?</h2>
+                        <h1 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-6">
+                            Ready to dominate?
+                        </h1>
                         <p className="text-gray-300 text-lg mb-12">
                             Join our team to test Scythe Client before its release!
                         </p>
@@ -208,7 +228,9 @@ export default function Home() {
                         className={`text-center mb-16 ${visibleSections.has('community-title') ? 'visible' : ''}`}
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <h2 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">Join Our Community</h2>
+                        <h1 className="bg-gradient-to-r from-[#6a5a7a] via-purple-200 to-[#3a2a5a] bg-clip-text text-transparent text-5xl md:text-6xl font-semibold mb-4">
+                            Join Our Community
+                        </h1>
                         <p className="text-gray-300 text-lg">Connect with players worldwide</p>
                     </div>
 

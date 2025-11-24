@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import axios from "axios";
 import Link from "next/link";
 import Header from "@/components/custom/Header";
 import Footer from "@/components/custom/Footer";
@@ -75,9 +76,53 @@ const BLOG_POSTS: Record<string, any> = {
 export default function BlogPost() {
     const params = useParams();
     const id = params?.id as string;
-    const post = BLOG_POSTS[id];
 
+    const [post, setPost] = useState<any | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [scrollProgress, setScrollProgress] = useState(0);
+
+    useEffect(() => {
+        const localPost = BLOG_POSTS[id];
+        if (localPost) {
+            setPost(localPost);
+            setIsLoading(false);
+            return;
+        }
+
+        const fetchBlog = async () => {
+            try {
+                const res = await axios.get("/api/blogs");
+                const blogs = res.data as any[];
+                const b = blogs.find((blog) => blog._id === id);
+
+                if (!b) {
+                    setPost(null);
+                    return;
+                }
+
+                const mapped = {
+                    title: b.title,
+                    date: new Date(b.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                    }),
+                    readTime: b.readTime || "3 min read",
+                    author: b.author,
+                    category: b.tag || "Announcement",
+                    image: b.backgroundImage || "/images/bg.jpg",
+                    content: b.content,
+                };
+                setPost(mapped);
+            } catch {
+                setPost(null);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        void fetchBlog();
+    }, [id]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -90,6 +135,17 @@ export default function BlogPost() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-black text-white">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4" />
+                    <p className="text-gray-400 text-lg">Loading article...</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!post) {
         return <NotFound />;
@@ -155,7 +211,11 @@ export default function BlogPost() {
                         prose-a:text-purple-400 prose-a:no-underline hover:prose-a:text-purple-300
                         prose-li:text-zinc-400
                     ">
-                        {post.content}
+                        {typeof post.content === "string" ? (
+                            <p className="whitespace-pre-line">{post.content}</p>
+                        ) : (
+                            post.content
+                        )}
                     </article>
 
                     <div className="h-px w-full bg-zinc-800 my-12" />

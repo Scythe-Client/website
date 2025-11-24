@@ -2,9 +2,12 @@
 
 import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { Calendar, Clock, ChevronRight, Tag, User } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import PanelGateLogin from "@/app/(routes)/admin/panel/PanelGateLogin";
 
 const BLOG_POSTS = [
     {
@@ -21,7 +24,7 @@ const BLOG_POSTS = [
     {
         id: "2",
         title: "About the Release",
-        excerpt: "It's still happening under closed doors, but the beta testing will be out sooner than you expect!",
+        excerpt: "It's still happening behind closed doors, but the beta testing will be out sooner than you expect!",
         date: "November 22, 2025",
         readTime: "5 min read",
         category: "Announcement",
@@ -31,8 +34,22 @@ const BLOG_POSTS = [
     },
 ];
 
+const ADMIN_ROLES = ["OWNER", "DEVELOPER", "ADMIN"];
+
+type BlogCard = (typeof BLOG_POSTS)[number] & {
+    _id?: string;
+    isDb?: boolean;
+};
+
 export default function Blogs() {
     const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+    const [posts, setPosts] = useState<BlogCard[]>(BLOG_POSTS);
+    const [isSecondaryAuthComplete, setIsSecondaryAuthComplete] = useState(false);
+    const [showPanelGateLogin, setShowPanelGateLogin] = useState(false);
+    const [newPostTitle, setNewPostTitle] = useState("");
+    const [newPostExcerpt, setNewPostExcerpt] = useState("");
+    const [newPostCategory, setNewPostCategory] = useState("");
+    const { isLoaded, isSignedIn, user } = useUser();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -46,11 +63,117 @@ export default function Blogs() {
             { threshold: 0.1 }
         );
 
-        const elements = document.querySelectorAll('[data-animate]');
+        const elements = document.querySelectorAll("[data-animate]");
         elements.forEach((el) => observer.observe(el));
 
         return () => observer.disconnect();
     }, []);
+
+    useEffect(() => {
+        const verifySession = async () => {
+            if (!isLoaded || !isSignedIn) {
+                return;
+            }
+
+            try {
+                const res = await axios.get("/api/admin/auth/verify");
+                if (res.data?.valid) {
+                    setIsSecondaryAuthComplete(true);
+                }
+            } catch {
+            }
+        };
+
+        void verifySession();
+    }, [isLoaded, isSignedIn]);
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const res = await axios.get("/api/blogs");
+                const dbPosts: BlogCard[] = res.data.map((b: any) => ({
+                    _id: b._id,
+                    isDb: true,
+                    id: b._id,
+                    title: b.title,
+                    excerpt: b.shortDescription,
+                    date: new Date(b.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                    }),
+                    readTime: b.readTime ?? "3 min read",
+                    category: b.tag ?? "Announcement",
+                    author: b.author,
+                    image: b.backgroundImage || "/images/bg.jpg",
+                    gradient: "from-purple-900 to-purple-800",
+                }));
+
+                setPosts([...dbPosts, ...BLOG_POSTS]);
+            } catch {
+            }
+        };
+
+        void fetchBlogs();
+    }, []);
+
+    const userHasAdminRole = ADMIN_ROLES.includes((user?.publicMetadata.role as string) || "");
+
+    const handleCreatePost = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (!newPostTitle.trim() || !newPostExcerpt.trim()) {
+            return;
+        }
+
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
+
+        const newPost = {
+            id: (posts.length + 1).toString(),
+            title: newPostTitle.trim(),
+            excerpt: newPostExcerpt.trim(),
+            date: formattedDate,
+            readTime: "3 min read",
+            category: newPostCategory.trim() || "Announcement",
+            author: user?.fullName ?? "Admin",
+            image: "/images/bg.jpg",
+            gradient: "from-purple-900 to-purple-800",
+        } as (typeof BLOG_POSTS)[number];
+
+        setPosts([newPost, ...posts]);
+        setNewPostTitle("");
+        setNewPostExcerpt("");
+        setNewPostCategory("");
+    };
+
+    const handleDeletePost = async (id?: string) => {
+        if (!id || !isSecondaryAuthComplete || !userHasAdminRole) {
+            return;
+        }
+
+        try {
+            await axios.delete("/api/admin/blogs", { data: { id } });
+            setPosts((prev) => prev.filter((p) => p._id !== id));
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (showPanelGateLogin && userHasAdminRole) {
+        return (
+            <PanelGateLogin
+                onLoginSuccess={() => {
+                    setIsSecondaryAuthComplete(true);
+                    setShowPanelGateLogin(false);
+                }}
+            />
+        );
+    }
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-purple-500/30">
@@ -62,7 +185,7 @@ export default function Blogs() {
                     <h1 className="font-[Horizon] text-[45px] md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#6b5499] via-[#9677c4] to-[#432e6e] bg-clip-text text-transparent opacity-0 animate-fade-in-up drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]" style={{ animationDelay: "0.1s" }}>
                         Latest News
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-200 mb-4 max-w-2xl opacity-0 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+                    <p className="text-xl md:text-2xl text-gray-200 mb-4 max-w-2xl opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
                         The central hub for detailed patch notes, performance deep-dives, and essential guides to help you maximize your FPS and gameplay experience.
                     </p>
                 </div>
@@ -75,17 +198,54 @@ export default function Blogs() {
 
             <section id="blog-grid" className="py-20 px-6 bg-gradient-to-b from-black to-gray-900 min-h-screen">
                 <div className="max-w-7xl mx-auto">
+                    {isLoaded && isSignedIn && userHasAdminRole && (
+                        <div className="mb-12 rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
+                            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                                <div>
+                                    <h2 className="text-xl font-semibold">Blog Admin</h2>
+                                    <p className="text-sm text-zinc-400">
+                                        {isSecondaryAuthComplete
+                                            ? "Panel access verified. You can manage blogs below."
+                                            : "Complete the Panel Gate login to unlock blog post creation."}
+                                    </p>
+                                </div>
+                                {!isSecondaryAuthComplete && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPanelGateLogin(true)}
+                                        className="inline-flex items-center justify-center rounded-md bg-purple-700 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-purple-900/50 transition-colors hover:bg-purple-600"
+                                    >
+                                        Login
+                                    </button>
+                                )}
+                            </div>
+
+                            {isSecondaryAuthComplete && (
+                                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                                    <p className="text-sm text-zinc-500">
+                                        You can create new blogs or delete existing ones from the list below.
+                                    </p>
+                                    <Link
+                                        href="/blogs/new"
+                                        className="inline-flex items-center justify-center rounded-md bg-purple-700 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-900/50 transition-colors hover:bg-purple-600"
+                                    >
+                                        Create New Blog
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <div
                         id="latest-posts"
                         data-animate
                         className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ${visibleSections.has('latest-posts') ? 'animate-fade-in-up' : 'opacity-0'}`}
                         style={{ animationDelay: '0.2s' }}
                     >
-                        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-                        {BLOG_POSTS.map((post, index) => (
+                        {posts.map((post) => (
                             <Link
-                                href={`/blogs/${post.id}`}
-                                key={post.id}
+                                href={post._id ? `/blogs/${post._id}` : `/blogs/${post.id}`}
+                                key={post._id ?? post.id}
                                 className="group relative flex flex-col bg-zinc-900/30 border border-zinc-800 hover:border-zinc-600 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]"
                             >
                                 <div
@@ -132,9 +292,23 @@ export default function Blogs() {
                                             </div>
                                             {post.author}
                                         </div>
-                                        <span className="text-purple-400 text-sm font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                            Read Article <ChevronRight className="w-4 h-4" />
-                                        </span>
+                                        <div className="flex items-center gap-3">
+                                            {isLoaded && isSignedIn && userHasAdminRole && isSecondaryAuthComplete && post._id && (
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        void handleDeletePost(post._id);
+                                                    }}
+                                                    className="text-xs text-red-400 hover:text-red-300"
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
+                                            <span className="text-purple-400 text-sm font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                                Read Article <ChevronRight className="w-4 h-4" />
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </Link>

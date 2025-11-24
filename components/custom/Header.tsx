@@ -7,23 +7,31 @@ import Image from "next/image";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 
+const ADMIN_ROLES = ["OWNER", "DEVELOPER", "ADMIN"];
+
 interface HeaderProps {
     currentPage: string;
 }
 
 export default function Header({ currentPage }: HeaderProps) {
-    const { isSignedIn } = useUser();
+    const { isSignedIn, user } = useUser();
+    const userHasAdminRole = ADMIN_ROLES.includes((user?.publicMetadata.role as string) || "");
+
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
 
-    const navLinks = [
+    const baseNavLinks = [
         { name: 'Home', href: '/' },
         { name: 'Features', href: '/features' },
         { name: 'Download', href: '/download' },
         { name: 'Community', href: '/community' },
         { name: 'Blogs', href: '/blogs' },
     ];
+
+    const navLinks = userHasAdminRole
+        ? [...baseNavLinks, { name: 'Admin Panel', href: '/admin' }]
+        : baseNavLinks;
 
     useEffect(() => {
         const handleScroll = () => {

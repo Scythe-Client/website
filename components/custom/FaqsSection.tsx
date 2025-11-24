@@ -74,7 +74,7 @@ const faqs = [
         id: "item-2",
         title: "How do I download Scythe Client?",
         content:
-            "You can download Scythe Client for free on our download page. Simply select your operating system and run the installer.",
+            "The client is currently not out and Beta release will be launched out soon, the client's status is currently in development.",
     },
     {
         id: "item-3",
@@ -86,7 +86,7 @@ const faqs = [
         id: "item-4",
         title: "Can I customize mods?",
         content:
-            "Absolutely. Every built-in mod is fully customizable, allowing you to adjust positions, sizes, and visual settings to match your playstyle.",
+            "Absolutely. Every built-in mod is fully customizable, allowing you to adjust positions, sizes, and visual settings to match your playstyle. You may also add your own mods.",
     },
     {
         id: "item-5",
@@ -105,5 +105,11 @@ const faqs = [
         title: "Are there in-app purchases?",
         content:
             "The client itself is free. The only purchases available are for cosmetic items like capes, wings, and bandanas, which do not provide any in-game advantage.",
+    },
+    {
+        id: "item-8",
+        title: "Does Scythe client support cracked accounts?",
+        content:
+            "No, we do not support cracked accounts and never will.",
     },
 ];
