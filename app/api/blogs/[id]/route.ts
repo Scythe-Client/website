@@ -4,11 +4,13 @@ import Blog from "@/app/models/Blog";
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
-  const blog = await Blog.findById(params.id);
+  const { id } = await params;
+
+  const blog = await Blog.findById(id);
 
   if (!blog) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
