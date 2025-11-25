@@ -38,7 +38,6 @@ export default function Home() {
 
         return () => observer.disconnect();
     }, []);
-
     return (
         <div className="min-h-screen bg-black text-white">
             <Header currentPage="/" />
