@@ -83,12 +83,11 @@ export const viewport: Viewport = {
     themeColor: '#7a4dba',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
                                              children,
                                          }: Readonly<{
     children: React.ReactNode;
 }>) {
-    await connectDB();
 
     const jsonLd = {
         '@context': 'https://schema.org',
