@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
 
             case "reset-password":
                 if (targetUser.clerkId) {
-                    await clerk.users.getUserOauthAccessToken(targetUser.clerkId, "google");
+                    await clerk.users.getUserOauthAccessToken(targetUser.clerkId, "oauth_google");
                 }
                 return NextResponse.json({ success: true, message: "Password reset email sent" });
 
